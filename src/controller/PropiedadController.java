@@ -1,4 +1,4 @@
-package controlador;
+package controller;
 
 public class PropiedadController {
     

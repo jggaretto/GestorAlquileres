@@ -1,5 +1,6 @@
-import util.Conexion;
 import java.sql.Connection;
+
+import repository.Conexion;
 
 public class Main {
     public static void main(String[] args) {

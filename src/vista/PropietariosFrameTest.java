@@ -1,9 +1,10 @@
 package vista;
 
-import util.Conexion;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import repository.Conexion;
+
 import java.awt.*;
 import java.sql.*;
 

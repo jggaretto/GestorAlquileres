@@ -10,6 +10,8 @@ public class MenuFrame extends JFrame {
     private JPanel panelContenido; 
     private JLabel lblTituloSeccion;
 
+    private JButton botonSeleccionado = null;
+
     private final Color COLOR_SIDEBAR = new Color(20, 25, 30);      
     private final Color COLOR_HOVER = new Color(35, 45, 55);        
     private final Color COLOR_ACCENTO = new Color(212, 175, 55);    
@@ -241,32 +243,51 @@ public class MenuFrame extends JFrame {
             padding
         );
 
+        javax.swing.border.Border bordeSeleccionado = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 4, 0, 0, COLOR_ACCENTO),
+        padding
+        );
+
         btn.setBorder(bordeNormal);
 
-        btn.addMouseListener(new MouseAdapter() {
+            btn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btn.setBackground(COLOR_HOVER);
-                btn.setForeground(Color.WHITE);
-                btn.setBorder(bordeHover); 
+                if (btn != botonSeleccionado) {
+                    btn.setBackground(COLOR_HOVER);
+                    btn.setForeground(Color.WHITE);
+                    btn.setBorder(bordeHover);
+                }
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                btn.setBackground(COLOR_SIDEBAR);
-                btn.setForeground(COLOR_TEXTO);
-                btn.setBorder(bordeNormal); 
+                if (btn != botonSeleccionado) {
+                    btn.setBackground(COLOR_SIDEBAR);
+                    btn.setForeground(COLOR_TEXTO);
+                    btn.setBorder(bordeNormal);
+                }
             }
         });
+        
+            btn.addActionListener(e -> {
+            if (botonSeleccionado != null) {
+                botonSeleccionado.setBackground(COLOR_SIDEBAR);
+                botonSeleccionado.setForeground(COLOR_TEXTO);
+                botonSeleccionado.setBorder(bordeNormal);
+            }
 
-   
-        btn.addActionListener(e -> {
-            if(texto.contains("Inicio")) {
+            botonSeleccionado = btn;
+            btn.setBackground(COLOR_HOVER);
+            btn.setForeground(COLOR_ACCENTO);      
+            btn.setBorder(bordeSeleccionado);
+
+            if (texto.contains("Inicio")) {
                 mostrarPantalla(crearPanelBienvenida(), "Inicio");
-            }else if(texto.contains("Propietarios")) {
+            } else if (texto.contains("Propietarios")) {
                 mostrarPantalla(new PropietariosPanel(), "Propietarios");
-            }else if(texto.contains("Inquilinos")) {
+            } else if (texto.contains("Inquilinos")) {
                 mostrarPantalla(new InquilinosPanel(), "Inquilinos");
-            }else {
+            } else {
                 JPanel panelVacio = new JPanel();
                 panelVacio.setBackground(COLOR_FONDO);
                 mostrarPantalla(panelVacio, texto);

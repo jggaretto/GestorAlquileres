@@ -262,7 +262,9 @@ public class MenuFrame extends JFrame {
         btn.addActionListener(e -> {
             if(texto.contains("Inicio")) {
                 mostrarPantalla(crearPanelBienvenida(), "Inicio");
-            } else {
+            }else if(texto.contains("Propietarios")) {
+                mostrarPantalla(new PropietariosPanel(), "Propietarios");
+            }else {
                 JPanel panelVacio = new JPanel();
                 panelVacio.setBackground(COLOR_FONDO);
                 mostrarPantalla(panelVacio, texto);
@@ -270,9 +272,5 @@ public class MenuFrame extends JFrame {
         });
        
         return btn;
-    }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MenuFrame().setVisible(true));
-    }
+    }   
 }

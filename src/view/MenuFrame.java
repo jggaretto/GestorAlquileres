@@ -291,6 +291,8 @@ public class MenuFrame extends JFrame {
                 mostrarPantalla(new PropiedadesPanel(), "Propiedades");
             } else if (texto.contains("Contratos")) {
                 mostrarPantalla(new ContratosPanel(), "Contratos");
+            } else if (texto.contains("Pagos")) {
+                mostrarPantalla(new PagosPanel(), "Pagos");
             } else {
                 JPanel panelVacio = new JPanel();
                 panelVacio.setBackground(COLOR_FONDO);

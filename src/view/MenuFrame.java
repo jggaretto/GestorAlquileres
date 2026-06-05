@@ -19,7 +19,7 @@ public class MenuFrame extends JFrame {
     private final Color COLOR_TEXTO = new Color(220, 225, 230);     
 
     public MenuFrame() {
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } 
+        try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } 
         catch (Exception e) { e.printStackTrace(); }
 
         setTitle("Gestión Inmobiliaria");

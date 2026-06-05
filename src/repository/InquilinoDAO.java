@@ -148,4 +148,23 @@ public class InquilinoDAO {
         }
         return lista;
     }
+
+    // -- VERIFICAR DNI DUPLICADO ---
+    public boolean existeDni(String dni){
+        String sql = "SELECT COUNT(*) FROM inquilinos WHERE dni = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, dni);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al verificar DNI: " + e.getMessage());
+        }
+        return false;
+    } 
+
 }

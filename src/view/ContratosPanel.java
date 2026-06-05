@@ -1,10 +1,16 @@
 package view;
 
+import controller.ContratoController;
+import model.Contrato;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class ContratosPanel extends JPanel {
 
@@ -35,6 +41,7 @@ public class ContratosPanel extends JPanel {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
+    private ContratoController controller = new ContratoController();
 
     public ContratosPanel() {
 
@@ -52,6 +59,9 @@ public class ContratosPanel extends JPanel {
         add(crearHeader(), BorderLayout.NORTH);
         add(crearContenedorCuerpo(), BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
+
+        inicializarEventos();
+        cargarTabla();
     }
 
     private JPanel crearHeader() {
@@ -356,7 +366,7 @@ public class ContratosPanel extends JPanel {
         return btn;
     }
 
-   private void estilizarTabla(JTable tabla) {
+    private void estilizarTabla(JTable tabla) {
 
         tabla.setRowHeight(38);
 
@@ -382,6 +392,165 @@ public class ContratosPanel extends JPanel {
         header.setFont(new Font("SansSerif",Font.BOLD,13));
 
         header.setPreferredSize(new Dimension(0, 42));
+    }
+
+    private void inicializarEventos() {
+        btnGuardar.addActionListener(e -> guardarContrato());
+        btnModificar.addActionListener(e -> modificarContrato());
+        btnEliminar.addActionListener(e -> eliminarContrato());
+        btnLimpiar.addActionListener(e -> limpiarFormulario());
+        btnBuscar.addActionListener(e -> cargarTabla(txtBuscar.getText().trim()));
+
+        tabla.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                cargarFormularioDesdeTabla();
+            }
+        });
+    }
+
+    private void guardarContrato() {
+        try {
+            Contrato contrato = leerContratoDelFormulario(0);
+            if (controller.agregar(contrato)) {
+                JOptionPane.showMessageDialog(this, "Contrato guardado correctamente");
+                cargarTabla();
+                limpiarFormulario();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo guardar el contrato");
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void modificarContrato() {
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un contrato de la tabla");
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
+            Contrato contrato = leerContratoDelFormulario(id);
+            if (controller.actualizar(contrato)) {
+                JOptionPane.showMessageDialog(this, "Contrato modificado correctamente");
+                cargarTabla();
+                limpiarFormulario();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo modificar el contrato");
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void eliminarContrato() {
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un contrato de la tabla");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Eliminar el contrato seleccionado?",
+                "Confirmar eliminacion",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
+            if (controller.eliminar(id)) {
+                JOptionPane.showMessageDialog(this, "Contrato eliminado correctamente");
+                cargarTabla();
+                limpiarFormulario();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el contrato");
+            }
+        }
+    }
+
+    private Contrato leerContratoDelFormulario(int id) {
+        if (txtFechaInicio.getText().trim().isEmpty()
+                || txtFechaFin.getText().trim().isEmpty()
+                || txtMonto.getText().trim().isEmpty()
+                || txtIdInquilino.getText().trim().isEmpty()
+                || txtIdPropiedad.getText().trim().isEmpty()) {
+            throw new IllegalArgumentException("Completa todos los campos");
+        }
+
+        try {
+            return new Contrato(
+                    id,
+                    Integer.parseInt(txtIdPropiedad.getText().trim()),
+                    Integer.parseInt(txtIdInquilino.getText().trim()),
+                    LocalDate.parse(txtFechaInicio.getText().trim()),
+                    LocalDate.parse(txtFechaFin.getText().trim()),
+                    Double.parseDouble(txtMonto.getText().trim())
+            );
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Monto, ID Inquilino e ID Propiedad deben ser numericos");
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Las fechas deben tener formato AAAA-MM-DD");
+        }
+    }
+
+    private void cargarTabla() {
+        cargarTabla("");
+    }
+
+    private void cargarTabla(String filtro) {
+        modeloTabla.setRowCount(0);
+        List<Contrato> contratos = controller.listar();
+        String textoFiltro = filtro.toLowerCase();
+
+        for (Contrato c : contratos) {
+            Object[] fila = {
+                    c.getId(),
+                    c.getFechaInicio(),
+                    c.getFechaFin(),
+                    c.getMonto(),
+                    c.getIdInquilino(),
+                    c.getIdPropiedad()
+            };
+
+            if (textoFiltro.isEmpty() || coincideFiltro(fila, textoFiltro)) {
+                modeloTabla.addRow(fila);
+            }
+        }
+    }
+
+    private boolean coincideFiltro(Object[] fila, String filtro) {
+        for (Object valor : fila) {
+            if (String.valueOf(valor).toLowerCase().contains(filtro)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void cargarFormularioDesdeTabla() {
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            return;
+        }
+
+        txtFechaInicio.setText(modeloTabla.getValueAt(fila, 1).toString());
+        txtFechaFin.setText(modeloTabla.getValueAt(fila, 2).toString());
+        txtMonto.setText(modeloTabla.getValueAt(fila, 3).toString());
+        txtIdInquilino.setText(modeloTabla.getValueAt(fila, 4).toString());
+        txtIdPropiedad.setText(modeloTabla.getValueAt(fila, 5).toString());
+    }
+
+    private void limpiarFormulario() {
+        txtFechaInicio.setText("");
+        txtFechaFin.setText("");
+        txtMonto.setText("");
+        txtIdInquilino.setText("");
+        txtIdPropiedad.setText("");
+        txtBuscar.setText("");
+        tabla.clearSelection();
     }
     // GETTERS
 

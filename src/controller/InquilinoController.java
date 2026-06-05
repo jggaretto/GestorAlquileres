@@ -18,7 +18,7 @@ public class InquilinoController {
         this.panel = panel;
         this.dao = new InquilinoDAO();
 
-        iniciarEventos(); 
+        iniciarEventos();
         listarTodos();
     }
 
@@ -50,6 +50,11 @@ public class InquilinoController {
 
     // --- GUARDAR ---
     private void guardar() {
+        if (dao.existeDni(panel.getTxtDni().getText().trim())) {
+            JOptionPane.showMessageDialog(panel, "Ya existe un inquilino con ese DNI.",
+              "DNI duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (camposVacios()) {
             JOptionPane.showMessageDialog(panel, "Completá todos los campos.");
             return;
@@ -59,8 +64,7 @@ public class InquilinoController {
             panel.getTxtNombre().getText().trim(),
             panel.getTxtApellido().getText().trim(),
             panel.getTxtDni().getText().trim(),
-            panel.getTxtTelefono().getText().trim()
-        );
+            panel.getTxtTelefono().getText().trim());
 
         if (dao.insertar(i)) {
             JOptionPane.showMessageDialog(panel, "Inquilino guardado correctamente.");
@@ -87,8 +91,7 @@ public class InquilinoController {
             panel.getTxtNombre().getText().trim(),
             panel.getTxtApellido().getText().trim(),
             panel.getTxtDni().getText().trim(),
-            panel.getTxtTelefono().getText().trim()
-        );
+            panel.getTxtTelefono().getText().trim());
 
         if (dao.modificar(i)) {
             JOptionPane.showMessageDialog(panel, "Inquilino modificado correctamente.");
@@ -107,11 +110,7 @@ public class InquilinoController {
         }
 
         int confirm = JOptionPane.showConfirmDialog(
-            panel,
-            "¿Seguro que querés eliminar este inquilino?",
-            "Confirmar",
-            JOptionPane.YES_NO_OPTION
-        );
+            panel,"¿Seguro que querés eliminar este inquilino?","Confirmar",JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             if (dao.eliminar(idSeleccionado)) {
@@ -144,7 +143,7 @@ public class InquilinoController {
         DefaultTableModel modelo = (DefaultTableModel) panel.getTabla().getModel();
         modelo.setRowCount(0);
         for (Inquilino i : lista) {
-            modelo.addRow(new Object[]{
+            modelo.addRow(new Object[] {
                 i.getId(),
                 i.getNombre(),
                 i.getApellido(),
@@ -177,11 +176,11 @@ public class InquilinoController {
         idSeleccionado = -1;
     }
 
-    // --- HELPERS --- 
+    // --- HELPERS ---
     private boolean camposVacios() {
         return panel.getTxtNombre().getText().trim().isEmpty()
-            || panel.getTxtApellido().getText().trim().isEmpty()
-            || panel.getTxtDni().getText().trim().isEmpty()
-            || panel.getTxtTelefono().getText().trim().isEmpty();
+        || panel.getTxtApellido().getText().trim().isEmpty()
+        || panel.getTxtDni().getText().trim().isEmpty()
+        || panel.getTxtTelefono().getText().trim().isEmpty();
     }
 }

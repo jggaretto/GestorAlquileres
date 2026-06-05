@@ -1,0 +1,3 @@
+javac -cp "lib/mysql-connector-j-9.7.0.jar" -d bin src/repository/Conexion.java src/model/Inquilino.java src/repository/InquilinoDAO.java src/controller/InquilinoController.java src/view/InquilinosPanel.java src/view/PropietariosPanel.java src/view/PropiedadesPanel.java src/view/ContratosPanel.java src/view/PagosPanel.java src/view/MenuFrame.java src/Main.java
+cp -r src/assets bin/assets
+java -cp "bin;lib/mysql-connector-j-9.7.0.jar" Main

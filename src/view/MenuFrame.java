@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import controller.InquilinoController;
 
 public class MenuFrame extends JFrame {
     private JPanel panelContenido; 
@@ -286,7 +287,9 @@ public class MenuFrame extends JFrame {
             } else if (texto.contains("Propietarios")) {
                 mostrarPantalla(new PropietariosPanel(), "Propietarios");
             } else if (texto.contains("Inquilinos")) {
-                mostrarPantalla(new InquilinosPanel(), "Inquilinos");
+                InquilinosPanel panelInquilinos = new InquilinosPanel();
+                new InquilinoController(panelInquilinos);
+                mostrarPantalla(panelInquilinos, "Inquilinos");
             } else if (texto.contains("Propiedades")) {
                 mostrarPantalla(new PropiedadesPanel(), "Propiedades");
             } else if (texto.contains("Contratos")) {

@@ -1,13 +1,13 @@
 package controller;
 
 import model.Pago;
-import repository.PagoRepository;
+import repository.PagoDAO;
 
 import java.util.List;
 
 public class PagoController {
 
-    private PagoRepository repo = new PagoRepository();
+    private PagoDAO repo = new PagoDAO();
 
     public boolean agregar(Pago p) {
         return repo.agregar(p);

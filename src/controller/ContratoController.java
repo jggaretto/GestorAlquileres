@@ -1,13 +1,13 @@
 package controller;
 
 import model.Contrato;
-import repository.ContratoRepository;
+import repository.ContratoDAO;
 
 import java.util.List;
 
 public class ContratoController {
 
-    private ContratoRepository repo = new ContratoRepository();
+    private ContratoDAO repo = new ContratoDAO();
 
     public boolean agregar(Contrato c) {
         return repo.agregar(c);

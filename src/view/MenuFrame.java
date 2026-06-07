@@ -1,5 +1,6 @@
 package view;
 
+import view.panels.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -78,7 +79,7 @@ public class MenuFrame extends JFrame {
         sidebar.add(crearBotonSidebar("Propiedades", "propiedades.png"));
         sidebar.add(crearBotonSidebar("Contratos", "contrato.png"));
         sidebar.add(crearBotonSidebar("Pagos", "pagos.png"));
-
+        sidebar.add(crearBotonSidebar("Reportes", "reportes.png"));
         add(sidebar, BorderLayout.WEST);
 
        
@@ -293,6 +294,8 @@ public class MenuFrame extends JFrame {
                 mostrarPantalla(new ContratosPanel(), "Contratos");
             } else if (texto.contains("Pagos")) {
                 mostrarPantalla(new PagosPanel(), "Pagos");
+            }  else if (texto.contains("Reportes")) {
+                mostrarPantalla(new ReportesPanel(), "Reportes");
             } else {
                 JPanel panelVacio = new JPanel();
                 panelVacio.setBackground(COLOR_FONDO);

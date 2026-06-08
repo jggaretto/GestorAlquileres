@@ -1,13 +1,19 @@
-package view;
+package view.panels;
 
-import view.panels.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import view.ContratosPanel;
+import view.InquilinosPanel;
+import view.PagosPanel;
+import view.PropiedadesPanel;
+import view.PropietariosPanel;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MenuFrame extends JFrame {
+public class MenuPanel extends JPanel {
     private JPanel panelContenido; 
     private JLabel lblTituloSeccion;
 
@@ -19,14 +25,10 @@ public class MenuFrame extends JFrame {
     private final Color COLOR_FONDO = new Color(245, 247, 250);     
     private final Color COLOR_TEXTO = new Color(220, 225, 230);     
 
-    public MenuFrame() {
+    public MenuPanel() {
         try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } 
         catch (Exception e) { e.printStackTrace(); }
 
-        setTitle("Gestión Inmobiliaria");
-        setSize(1150, 750);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
 
@@ -80,6 +82,73 @@ public class MenuFrame extends JFrame {
         sidebar.add(crearBotonSidebar("Contratos", "contrato.png"));
         sidebar.add(crearBotonSidebar("Pagos", "pagos.png"));
         sidebar.add(crearBotonSidebar("Reportes", "reportes.png"));
+        
+        //--ADMIN------------------------------------------------------
+        sidebar.add(Box.createVerticalGlue());
+
+        // Separador
+        JPanel sepBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        sepBottom.setBackground(COLOR_SIDEBAR);
+        sepBottom.setMaximumSize(new Dimension(260, 2));
+        JSeparator sepUser = new JSeparator();
+        sepUser.setForeground(new Color(60, 70, 80));
+        sepUser.setBackground(COLOR_SIDEBAR);
+        sepUser.setPreferredSize(new Dimension(210, 1));
+        sepBottom.add(sepUser);
+        sidebar.add(sepBottom);
+
+        // Panel de usuario
+        JPanel panelUsuario = new JPanel(new BorderLayout(12, 0));
+        panelUsuario.setBackground(COLOR_SIDEBAR);
+        panelUsuario.setMaximumSize(new Dimension(260, 70));
+        panelUsuario.setBorder(new EmptyBorder(14, 20, 14, 20));
+
+        // Avatar circular con inicial
+        JPanel avatar = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                    RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(COLOR_ACCENTO);
+                g2.fillOval(0, 0, getWidth(), getHeight());
+                g2.setColor(Color.BLACK);
+                g2.setFont(new Font("SansSerif", Font.BOLD, 16));
+                FontMetrics fm = g2.getFontMetrics();
+                String inicial = "A";
+                int x = (getWidth()  - fm.stringWidth(inicial)) / 2;
+                int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+                g2.drawString(inicial, x, y);
+                g2.dispose();
+            }
+        };
+        avatar.setOpaque(false);
+        avatar.setPreferredSize(new Dimension(38, 38));
+
+        // Textos
+        JPanel textos = new JPanel();
+        textos.setOpaque(false);
+        textos.setLayout(new BoxLayout(textos, BoxLayout.Y_AXIS));
+
+        JLabel lblNombreUsuario = new JLabel("Administrador");
+        lblNombreUsuario.setFont(new Font("SansSerif", Font.BOLD, 13));
+        lblNombreUsuario.setForeground(Color.WHITE);
+
+        JLabel lblRol = new JLabel("admin");
+        lblRol.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        lblRol.setForeground(COLOR_ACCENTO);
+
+        textos.add(lblNombreUsuario);
+        textos.add(Box.createVerticalStrut(3));
+        textos.add(lblRol);
+
+        panelUsuario.add(avatar,  BorderLayout.WEST);
+        panelUsuario.add(textos,  BorderLayout.CENTER);
+
+        sidebar.add(panelUsuario);
+        //------------------------------------------------------------------------
+
         add(sidebar, BorderLayout.WEST);
 
        
@@ -99,12 +168,6 @@ public class MenuFrame extends JFrame {
         lblTituloSeccion.setForeground(Color.WHITE); 
         lblTituloSeccion.setBorder(new EmptyBorder(0, 30, 0, 0));
         header.add(lblTituloSeccion, BorderLayout.WEST);
-
-        JLabel lblUsuario = new JLabel("●  Administrador   ");
-        lblUsuario.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        lblUsuario.setForeground(COLOR_TEXTO); 
-        lblUsuario.setBorder(new EmptyBorder(0, 0, 0, 30));
-        header.add(lblUsuario, BorderLayout.EAST);
 
         panelDerecho.add(header, BorderLayout.NORTH);
 

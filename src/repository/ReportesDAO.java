@@ -1,6 +1,7 @@
 package repository;
 
 import java.sql.*;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,14 +31,12 @@ public class ReportesDAO {
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) {
-                Locale localeAR = new Locale("es", "AR");
-
                 datos.put("Contratos activos",      rs.getString("total_contratos"));
                 datos.put("Total de pagos",         rs.getString("total_pagos"));
                 datos.put("Pagos al día",           rs.getString("pagos_al_dia"));
                 datos.put("Pagos pendientes",       rs.getString("pagos_pendientes"));
-                datos.put("Total recaudado ($)",    String.format(localeAR, "$ %,.2f", rs.getDouble("total_recaudado")));
-                datos.put("Deuda pendiente ($)",    String.format(localeAR, "$ %,.2f", rs.getDouble("total_deuda")));
+                datos.put("Total recaudado ($)",    formatearMonto(rs.getDouble("total_recaudado")));
+                datos.put("Deuda pendiente ($)",    formatearMonto(rs.getDouble("total_deuda")));
                 datos.put("Propiedades libres",     rs.getString("propiedades_libres"));
                 datos.put("Propiedades ocupadas",   rs.getString("propiedades_ocupadas"));
             }
@@ -80,7 +79,7 @@ public class ReportesDAO {
                     rs.getInt("total_pagos"),
                     rs.getInt("pagados"),
                     rs.getInt("pendientes"),
-                    String.format("$ %.2f", rs.getDouble("total_monto")),
+                    formatearMonto(rs.getDouble("total_monto")),
                     rs.getDate("fecha_inicio"),
                     rs.getDate("fecha_fin")
                 });
@@ -108,7 +107,7 @@ public class ReportesDAO {
                     filas.add(new Object[]{
                         rs.getInt("id"),
                         rs.getString("mes"),
-                        String.format("$ %.2f", rs.getDouble("monto")),
+                        formatearMonto(rs.getDouble("monto")),
                         rs.getString("estado"),
                         rs.getDate("fecha_pago")
                     });
@@ -126,7 +125,7 @@ public String generarTextoReporte(List<Object[]> filas) {
     
     // Obtener la fecha y hora actual en Argentina
     ZonedDateTime ahora = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
-    DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy, HH:mm:ss", new Locale("es", "AR"));
+    DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy, HH:mm:ss", Locale.forLanguageTag("es-AR"));
     String fechaGeneracion = ahora.format(formateador);
 
     sb.append("═══════════════════════════════════════════════════════════════\n");
@@ -148,6 +147,13 @@ public String generarTextoReporte(List<Object[]> filas) {
     sb.append("  Total de contratos listados: ").append(filas.size()).append("\n");
     return sb.toString();
 }
+
+    private String formatearMonto(double monto) {
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return "$ " + formato.format(monto);
+    }
 
     private String truncar(String s, int max) {
         return s.length() > max ? s.substring(0, max - 1) + "…" : s;

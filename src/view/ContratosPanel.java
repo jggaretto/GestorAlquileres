@@ -2,15 +2,18 @@ package view;
 
 import controller.ContratoController;
 import model.Contrato;
+import view.components.ModernScrollPane;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Locale;
 
 public class ContratosPanel extends JPanel {
 
@@ -196,7 +199,7 @@ public class ContratosPanel extends JPanel {
 
         estilizarTabla(tabla);
 
-        JScrollPane scroll = new JScrollPane(tabla);
+        JScrollPane scroll = new ModernScrollPane(tabla);
 
         scroll.setBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE)
@@ -487,7 +490,7 @@ public class ContratosPanel extends JPanel {
                     Integer.parseInt(txtIdInquilino.getText().trim()),
                     LocalDate.parse(txtFechaInicio.getText().trim()),
                     LocalDate.parse(txtFechaFin.getText().trim()),
-                    Double.parseDouble(txtMonto.getText().trim())
+                    parsearMonto(txtMonto.getText().trim())
             );
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Monto, ID Inquilino e ID Propiedad deben ser numericos");
@@ -510,7 +513,7 @@ public class ContratosPanel extends JPanel {
                     c.getId(),
                     c.getFechaInicio(),
                     c.getFechaFin(),
-                    c.getMonto(),
+                    formatearMonto(c.getMonto()),
                     c.getIdInquilino(),
                     c.getIdPropiedad()
             };
@@ -541,6 +544,23 @@ public class ContratosPanel extends JPanel {
         txtMonto.setText(modeloTabla.getValueAt(fila, 3).toString());
         txtIdInquilino.setText(modeloTabla.getValueAt(fila, 4).toString());
         txtIdPropiedad.setText(modeloTabla.getValueAt(fila, 5).toString());
+    }
+
+    private String formatearMonto(double monto) {
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return "$ " + formato.format(monto);
+    }
+
+    private double parsearMonto(String texto) {
+        String normalizado = texto
+                .replace("$", "")
+                .replace(" ", "")
+                .replace(".", "")
+                .replace(",", ".")
+                .trim();
+        return Double.parseDouble(normalizado);
     }
 
     private void limpiarFormulario() {

@@ -1,13 +1,16 @@
 package view.dialogs;
 
 import repository.ReportesDAO;
+import view.components.ModernScrollPane;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Ventana modal que muestra el detalle de pagos de un contrato específico.
@@ -64,8 +67,8 @@ public class ReporteDetalleDialog extends JDialog {
 
         JPanel badges = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
         badges.setOpaque(false);
-        badges.add(crearBadge("Pagado", String.format("$ %.2f", totalPagado), new Color(34, 197, 94)));
-        badges.add(crearBadge("Pendiente", String.format("$ %.2f", totalPend), new Color(239, 68, 68)));
+        badges.add(crearBadge("Pagado", formatearMonto(totalPagado), new Color(34, 197, 94)));
+        badges.add(crearBadge("Pendiente", formatearMonto(totalPend), new Color(239, 68, 68)));
         header.add(badges, BorderLayout.EAST);
 
         add(header, BorderLayout.NORTH);
@@ -101,7 +104,7 @@ public class ReporteDetalleDialog extends JDialog {
         th.setFont(new Font("SansSerif", Font.BOLD, 13));
         th.setPreferredSize(new Dimension(0, 40));
 
-        JScrollPane scroll = new JScrollPane(tabla);
+        JScrollPane scroll = new ModernScrollPane(tabla);
         scroll.setBorder(BorderFactory.createCompoundBorder(
             new EmptyBorder(20, 20, 10, 20),
             BorderFactory.createLineBorder(COLOR_BORDE)
@@ -141,6 +144,13 @@ public class ReporteDetalleDialog extends JDialog {
     }
     return total;
 }
+
+    private String formatearMonto(double monto) {
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return "$ " + formato.format(monto);
+    }
 
     private JPanel crearBadge(String label, String valor, Color color) {
         JPanel p = new JPanel(new BorderLayout(4, 2));

@@ -1,6 +1,8 @@
 package model;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class Pago {
     private int id;
@@ -41,6 +43,13 @@ public class Pago {
 
     @Override
     public String toString() {
-        return "Pago #" + id + " - " + mes + " ($" + monto + ")";
+        return "Pago #" + id + " - " + mes + " (" + formatearMonto(monto) + ")";
+    }
+
+    private String formatearMonto(double monto) {
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return "$ " + formato.format(monto);
     }
 }

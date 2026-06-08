@@ -1,5 +1,7 @@
 package view;
 
+import view.components.ModernScrollPane;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -175,7 +177,7 @@ public class InquilinosPanel extends JPanel {
 
         estilizarTabla(tabla);
 
-        JScrollPane scroll = new JScrollPane(tabla);
+        JScrollPane scroll = new ModernScrollPane(tabla);
 
         scroll.setBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE)

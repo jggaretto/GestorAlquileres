@@ -1,6 +1,7 @@
 package view.panels;
 
 import view.dialogs.ReporteDetalleDialog;
+import view.components.ModernScrollPane;
 import repository.ReportesDAO;
 
 import javax.swing.*;
@@ -182,7 +183,7 @@ public class ReportesPanel extends JPanel {
             }
         });
 
-        JScrollPane scroll = new JScrollPane(tabla);
+        JScrollPane scroll = new ModernScrollPane(tabla);
         scroll.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
         scroll.getViewport().setBackground(COLOR_CARD);
         cuerpo.add(scroll, BorderLayout.CENTER);

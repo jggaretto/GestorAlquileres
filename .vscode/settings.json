@@ -5,8 +5,7 @@
         "test"
     ],
     "java.project.referencedLibraries": [
-        "/home/juan/Escritorio/ParcialAbmInmobiliaria/lib/junit-platform-console-standalone-6.1.0.jar",
-        "/home/juan/Escritorio/ParcialAbmInmobiliaria/lib/mysql-connector-j-9.7.0.jar"
+        "lib/**/*.jar"
     ],
     "sqltools.connections": [
         {

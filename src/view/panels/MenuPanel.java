@@ -12,7 +12,9 @@ import view.PropietariosPanel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import controller.ContratoController;
 import controller.InquilinoController;
+import controller.PagoController;
 
 public class MenuPanel extends JPanel {
     private JPanel panelContenido; 
@@ -357,9 +359,13 @@ public class MenuPanel extends JPanel {
             } else if (texto.contains("Propiedades")) {
                 mostrarPantalla(new PropiedadesPanel(), "Propiedades");
             } else if (texto.contains("Contratos")) {
-                mostrarPantalla(new ContratosPanel(), "Contratos");
+                ContratosPanel panelContratos = new ContratosPanel();
+                new ContratoController(panelContratos);
+                mostrarPantalla(panelContratos, "Contratos");
             } else if (texto.contains("Pagos")) {
-                mostrarPantalla(new PagosPanel(), "Pagos");
+                PagosPanel panelPagos = new PagosPanel();
+                new PagoController(panelPagos);
+                mostrarPantalla(panelPagos, "Pagos");
             }  else if (texto.contains("Reportes")) {
                 mostrarPantalla(new ReportesPanel(), "Reportes");
             } else {

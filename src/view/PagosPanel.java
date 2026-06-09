@@ -1,7 +1,5 @@
 package view;
 
-import controller.PagoController;
-import model.Pago;
 import view.components.ModernScrollPane;
 
 import javax.swing.*;
@@ -9,11 +7,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Locale;
 
 public class PagosPanel extends JPanel {
 
@@ -44,7 +37,6 @@ public class PagosPanel extends JPanel {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
-    private PagoController controller = new PagoController();
 
     public PagosPanel() {
 
@@ -62,9 +54,6 @@ public class PagosPanel extends JPanel {
         add(crearHeader(), BorderLayout.NORTH);
         add(crearContenedorCuerpo(), BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
-
-        inicializarEventos();
-        cargarTabla();
     }
 
     private JPanel crearHeader() {
@@ -397,181 +386,6 @@ public class PagosPanel extends JPanel {
         header.setPreferredSize(new Dimension(0, 42));
     }
 
-    private void inicializarEventos() {
-        btnGuardar.addActionListener(e -> guardarPago());
-        btnModificar.addActionListener(e -> modificarPago());
-        btnEliminar.addActionListener(e -> eliminarPago());
-        btnLimpiar.addActionListener(e -> limpiarFormulario());
-        btnBuscar.addActionListener(e -> cargarTabla(txtBuscar.getText().trim()));
-
-        tabla.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                cargarFormularioDesdeTabla();
-            }
-        });
-    }
-
-    private void guardarPago() {
-        try {
-            Pago pago = leerPagoDelFormulario(0);
-            if (controller.agregar(pago)) {
-                JOptionPane.showMessageDialog(this, "Pago guardado correctamente");
-                cargarTabla();
-                limpiarFormulario();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo guardar el pago");
-            }
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-    }
-
-    private void modificarPago() {
-        int fila = tabla.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona un pago de la tabla");
-            return;
-        }
-
-        try {
-            int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
-            Pago pago = leerPagoDelFormulario(id);
-            if (controller.actualizar(pago)) {
-                JOptionPane.showMessageDialog(this, "Pago modificado correctamente");
-                cargarTabla();
-                limpiarFormulario();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo modificar el pago");
-            }
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-    }
-
-    private void eliminarPago() {
-        int fila = tabla.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona un pago de la tabla");
-            return;
-        }
-
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Eliminar el pago seleccionado?",
-                "Confirmar eliminacion",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
-            if (controller.eliminar(id)) {
-                JOptionPane.showMessageDialog(this, "Pago eliminado correctamente");
-                cargarTabla();
-                limpiarFormulario();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el pago");
-            }
-        }
-    }
-
-    private Pago leerPagoDelFormulario(int id) {
-        if (txtMes.getText().trim().isEmpty()
-                || txtMonto.getText().trim().isEmpty()
-                || txtEstado.getText().trim().isEmpty()
-                || txtFechaPago.getText().trim().isEmpty()
-                || txtIdContrato.getText().trim().isEmpty()) {
-            throw new IllegalArgumentException("Completa todos los campos");
-        }
-
-        try {
-            return new Pago(
-                    id,
-                    txtMes.getText().trim(),
-                    parsearMonto(txtMonto.getText().trim()),
-                    txtEstado.getText().trim(),
-                    LocalDate.parse(txtFechaPago.getText().trim()),
-                    Integer.parseInt(txtIdContrato.getText().trim())
-            );
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Monto e ID Contrato deben ser numericos");
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("La fecha de pago debe tener formato AAAA-MM-DD");
-        }
-    }
-
-    private void cargarTabla() {
-        cargarTabla("");
-    }
-
-    private void cargarTabla(String filtro) {
-        modeloTabla.setRowCount(0);
-        List<Pago> pagos = controller.listar();
-        String textoFiltro = filtro.toLowerCase();
-
-        for (Pago p : pagos) {
-            Object[] fila = {
-                    p.getId(),
-                    p.getMes(),
-                    formatearMonto(p.getMonto()),
-                    p.getEstado(),
-                    p.getFechaPago(),
-                    p.getIdContrato()
-            };
-
-            if (textoFiltro.isEmpty() || coincideFiltro(fila, textoFiltro)) {
-                modeloTabla.addRow(fila);
-            }
-        }
-    }
-
-    private boolean coincideFiltro(Object[] fila, String filtro) {
-        for (Object valor : fila) {
-            if (String.valueOf(valor).toLowerCase().contains(filtro)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void cargarFormularioDesdeTabla() {
-        int fila = tabla.getSelectedRow();
-        if (fila == -1) {
-            return;
-        }
-
-        txtMes.setText(modeloTabla.getValueAt(fila, 1).toString());
-        txtMonto.setText(modeloTabla.getValueAt(fila, 2).toString());
-        txtEstado.setText(modeloTabla.getValueAt(fila, 3).toString());
-        txtFechaPago.setText(modeloTabla.getValueAt(fila, 4).toString());
-        txtIdContrato.setText(modeloTabla.getValueAt(fila, 5).toString());
-    }
-
-    private String formatearMonto(double monto) {
-        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
-        formato.setMinimumFractionDigits(2);
-        formato.setMaximumFractionDigits(2);
-        return "$ " + formato.format(monto);
-    }
-
-    private double parsearMonto(String texto) {
-        String normalizado = texto
-                .replace("$", "")
-                .replace(" ", "")
-                .replace(".", "")
-                .replace(",", ".")
-                .trim();
-        return Double.parseDouble(normalizado);
-    }
-
-    private void limpiarFormulario() {
-        txtMes.setText("");
-        txtMonto.setText("");
-        txtEstado.setText("");
-        txtFechaPago.setText("");
-        txtIdContrato.setText("");
-        txtBuscar.setText("");
-        tabla.clearSelection();
-    }
     // GETTERS
 
     public JTextField getTxtMes() {

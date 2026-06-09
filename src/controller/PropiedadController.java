@@ -1,13 +1,13 @@
 package controller;
 
 import model.Propiedad;
-import repository.PropiedadRepository;
+import repository.PropiedadDAO;
 
 import java.util.List;
 
 public class PropiedadController {
 
-    private PropiedadRepository repo = new PropiedadRepository();
+    private PropiedadDAO repo = new PropiedadDAO();
 
     public boolean agregar(Propiedad p) {
         return repo.agregar(p);

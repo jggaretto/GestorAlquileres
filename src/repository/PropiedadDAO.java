@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropiedadRepository {
+public class PropiedadDAO {
 
     public boolean agregar(Propiedad p) {
         String sql = "INSERT INTO propiedades (direccion, tipo, precio_mensual, disponible, id_propietario) VALUES (?, ?, ?, ?, ?)";

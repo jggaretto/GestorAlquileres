@@ -74,4 +74,27 @@ public class PropiedadDAO {
             return false;
         }
     }
+    public List<Propiedad> buscar(String texto) {
+    List<Propiedad> lista = new ArrayList<>();
+    String sql = "SELECT * FROM propiedades WHERE direccion LIKE ? OR tipo LIKE ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, "%" + texto + "%");
+        ps.setString(2, "%" + texto + "%");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            lista.add(new Propiedad(
+                rs.getInt("id"),
+                rs.getString("direccion"),
+                rs.getString("tipo"),
+                rs.getDouble("precio_mensual"),
+                rs.getBoolean("disponible"),
+                rs.getInt("id_propietario")
+            ));
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al buscar: " + e.getMessage());
+    }
+    return lista;
+}
 }

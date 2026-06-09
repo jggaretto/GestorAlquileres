@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import controller.ContratoController;
 import controller.InquilinoController;
 import controller.PagoController;
+import controller.PropiedadController;
 
 public class MenuPanel extends JPanel {
     private JPanel panelContenido; 
@@ -356,8 +357,8 @@ public class MenuPanel extends JPanel {
                 InquilinosPanel panelInquilinos = new InquilinosPanel();
                 new InquilinoController(panelInquilinos);
                 mostrarPantalla(panelInquilinos, "Inquilinos");
-            } else if (texto.contains("Propiedades")) {
-                mostrarPantalla(new PropiedadesPanel(), "Propiedades");
+            } else if (texto.contains("Propiedades")) { PropiedadesPanel panelPropiedades = new PropiedadesPanel(); new PropiedadController(panelPropiedades);
+                mostrarPantalla(panelPropiedades, "Propiedades");
             } else if (texto.contains("Contratos")) {
                 ContratosPanel panelContratos = new ContratosPanel();
                 new ContratoController(panelContratos);

@@ -3,12 +3,6 @@ package view.panels;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import view.ContratosPanel;
-import view.InquilinosPanel;
-import view.PagosPanel;
-import view.PropiedadesPanel;
-import view.PropietariosPanel;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

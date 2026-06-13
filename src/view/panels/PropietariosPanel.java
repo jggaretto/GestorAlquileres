@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import view.components.ModernScrollPane;
 
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class InquilinosPanel extends JPanel {
+public class PropietariosPanel extends JPanel {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -20,12 +20,13 @@ public class InquilinosPanel extends JPanel {
 
     private final Color COLOR_BORDE = new Color(45, 55, 65);
 
+
     private final Color COLOR_TEXTO_SECUNDARIO = new Color(170, 180, 190);
 
     private JTextField txtNombre;
     private JTextField txtApellido;
-    private JTextField txtDni;
     private JTextField txtTelefono;
+    private JTextField txtEmail;
     private JTextField txtBuscar;
 
     private JButton btnGuardar;
@@ -37,7 +38,7 @@ public class InquilinosPanel extends JPanel {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    public InquilinosPanel() {
+    public PropietariosPanel() {
 
         setLayout(new BorderLayout(0, 20));
 
@@ -45,8 +46,8 @@ public class InquilinosPanel extends JPanel {
 
         setBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(3, 0, 0, 0, COLOR_ACCENTO_ORO),
-                        new EmptyBorder(25, 30, 25, 30)
+                        BorderFactory.createMatteBorder(3,0,0,0,COLOR_ACCENTO_ORO),
+                        new EmptyBorder(25,30,25,30)
                 )
         );
 
@@ -64,12 +65,11 @@ public class InquilinosPanel extends JPanel {
         panelTitulos.setOpaque(false);
         panelTitulos.setLayout(new BoxLayout(panelTitulos, BoxLayout.Y_AXIS));
 
-        JLabel lblTitulo = new JLabel("Inquilinos");
+        JLabel lblTitulo = new JLabel("Propietarios");
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
 
-        JLabel lblSubtitulo =
-                new JLabel("Administración de inquilinos registrados");
+        JLabel lblSubtitulo = new JLabel("Administración de propietarios registrados");
 
         lblSubtitulo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         lblSubtitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -80,19 +80,13 @@ public class InquilinosPanel extends JPanel {
 
         header.add(panelTitulos, BorderLayout.WEST);
 
-        JPanel busqueda =
-                new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel busqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
 
         busqueda.setOpaque(false);
 
         txtBuscar = crearInputElegante(18);
 
-        btnBuscar =
-                crearBoton(
-                        "BUSCAR",
-                        COLOR_SIDEBAR,
-                        Color.WHITE
-                );
+        btnBuscar = crearBoton("BUSCAR", COLOR_SIDEBAR, Color.WHITE);
 
         busqueda.add(txtBuscar);
         busqueda.add(btnBuscar);
@@ -114,24 +108,16 @@ public class InquilinosPanel extends JPanel {
 
         formulario.setBackground(COLOR_CARD);
 
-        formulario.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(COLOR_BORDE),
-                        new EmptyBorder(25, 25, 25, 25)
-                )
-        );
+        formulario.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(COLOR_BORDE),
+                new EmptyBorder(25,25,25,25)
+                ));
 
         txtNombre = crearInputElegante(1);
         txtApellido = crearInputElegante(1);
-        txtDni = crearInputElegante(1);
         txtTelefono = crearInputElegante(1);
+        txtEmail = crearInputElegante(1);
 
-        formulario.add(
-                crearCampo(
-                        "NOMBRE DEL INQUILINO",
-                        txtNombre
-                )
-        );
+        formulario.add(crearCampo("NOMBRE DEL PROPIETARIO",txtNombre));
 
         formulario.add(
                 crearCampo(
@@ -142,15 +128,15 @@ public class InquilinosPanel extends JPanel {
 
         formulario.add(
                 crearCampo(
-                        "DNI",
-                        txtDni
+                        "TELÉFONO DE CONTACTO",
+                        txtTelefono
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "TELÉFONO DE CONTACTO",
-                        txtTelefono
+                        "CORREO ELECTRÓNICO",
+                        txtEmail
                 )
         );
 
@@ -167,8 +153,8 @@ public class InquilinosPanel extends JPanel {
                         "ID",
                         "Nombre",
                         "Apellido",
-                        "DNI",
-                        "Teléfono"
+                        "Teléfono",
+                        "Email"
                 },
                 0
         );
@@ -197,44 +183,17 @@ public class InquilinosPanel extends JPanel {
 
     private JPanel crearPanelBotones() {
 
-        JPanel panel =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.RIGHT,
-                                10,
-                                0
-                        )
-                );
+        JPanel panel = new JPanel( new FlowLayout( FlowLayout.RIGHT, 10, 0));
 
         panel.setOpaque(false);
 
-        btnLimpiar =
-                crearBoton(
-                        "LIMPIAR",
-                        new Color(90, 100, 115),
-                        Color.WHITE
-                );
+        btnLimpiar = crearBoton("LIMPIAR", new Color(90, 100, 115),Color.WHITE);
 
-        btnEliminar =
-                crearBoton(
-                        "ELIMINAR",
-                        new Color(153, 27, 27),
-                        Color.WHITE
-                );
+        btnEliminar = crearBoton("ELIMINAR", new Color(153, 27, 27),Color.WHITE);
 
-        btnModificar =
-                crearBoton(
-                        "MODIFICAR",
-                        COLOR_SIDEBAR,
-                        Color.WHITE
-                );
+        btnModificar = crearBoton("MODIFICAR", COLOR_SIDEBAR, Color.WHITE);
 
-        btnGuardar =
-                crearBoton(
-                        "GUARDAR",
-                        COLOR_ACCENTO_ORO,
-                        Color.BLACK
-                );
+        btnGuardar = crearBoton("GUARDAR", COLOR_ACCENTO_ORO, Color.BLACK);
 
         panel.add(btnLimpiar);
         panel.add(btnEliminar);
@@ -256,11 +215,7 @@ public class InquilinosPanel extends JPanel {
         JLabel lbl = new JLabel(titulo);
 
         lbl.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        12
-                )
+                new Font("SansSerif",Font.BOLD,12)
         );
 
         lbl.setForeground(COLOR_ACCENTO_ORO);
@@ -335,8 +290,7 @@ public class InquilinosPanel extends JPanel {
                 )
         );
 
-        btn.setBorder(
-                new EmptyBorder(
+        btn.setBorder(new EmptyBorder(
                         12,
                         25,
                         12,
@@ -347,7 +301,7 @@ public class InquilinosPanel extends JPanel {
         return btn;
     }
 
-     private void estilizarTabla(JTable tabla) {
+    private void estilizarTabla(JTable tabla) {
 
         tabla.setRowHeight(38);
 
@@ -375,7 +329,6 @@ public class InquilinosPanel extends JPanel {
         header.setPreferredSize(new Dimension(0, 42));
     }
 
-
     // GETTERS
 
     public JTextField getTxtNombre() {
@@ -386,12 +339,12 @@ public class InquilinosPanel extends JPanel {
         return txtApellido;
     }
 
-    public JTextField getTxtDni() {
-        return txtDni;
-    }
-
     public JTextField getTxtTelefono() {
         return txtTelefono;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
     }
 
     public JTextField getTxtBuscar() {

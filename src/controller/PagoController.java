@@ -2,7 +2,7 @@ package controller;
 
 import model.Pago;
 import repository.PagoDAO;
-import view.PagosPanel;
+import view.panels.PagosPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

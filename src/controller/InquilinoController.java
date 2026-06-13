@@ -2,7 +2,7 @@ package controller;
 
 import model.Inquilino;
 import repository.InquilinoDAO;
-import view.InquilinosPanel;
+import view.panels.InquilinosPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

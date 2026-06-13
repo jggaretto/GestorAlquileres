@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import view.components.ModernScrollPane;
 
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class PagosPanel extends JPanel {
+public class ContratosPanel extends JPanel {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -22,11 +22,11 @@ public class PagosPanel extends JPanel {
 
     private final Color COLOR_TEXTO_SECUNDARIO = new Color(170, 180, 190);
 
-    private JTextField txtMes;
+    private JTextField txtFechaInicio;
+    private JTextField txtFechaFin;
     private JTextField txtMonto;
-    private JTextField txtEstado;
-    private JTextField txtFechaPago;
-    private JTextField txtIdContrato;
+    private JTextField txtIdInquilino;
+    private JTextField txtIdPropiedad;
     private JTextField txtBuscar;
 
     private JButton btnGuardar;
@@ -38,7 +38,7 @@ public class PagosPanel extends JPanel {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    public PagosPanel() {
+    public ContratosPanel() {
 
         setLayout(new BorderLayout(0, 20));
 
@@ -65,12 +65,12 @@ public class PagosPanel extends JPanel {
         panelTitulos.setOpaque(false);
         panelTitulos.setLayout(new BoxLayout(panelTitulos, BoxLayout.Y_AXIS));
 
-        JLabel lblTitulo = new JLabel("Pagos");
+        JLabel lblTitulo = new JLabel("Contratos");
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
 
         JLabel lblSubtitulo =
-                new JLabel("Administración de pagos registrados");
+                new JLabel("Administración de contratos registrados");
 
         lblSubtitulo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         lblSubtitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -122,16 +122,23 @@ public class PagosPanel extends JPanel {
                 )
         );
 
-        txtMes = crearInputElegante(1);
+        txtFechaInicio = crearInputElegante(1);
+        txtFechaFin = crearInputElegante(1);
         txtMonto = crearInputElegante(1);
-        txtEstado = crearInputElegante(1);
-        txtFechaPago = crearInputElegante(1);
-        txtIdContrato = crearInputElegante(1);
+        txtIdInquilino = crearInputElegante(1);
+        txtIdPropiedad = crearInputElegante(1);
 
         formulario.add(
                 crearCampo(
-                        "MES",
-                        txtMes
+                        "FECHA INICIO (AAAA-MM-DD)",
+                        txtFechaInicio
+                )
+        );
+
+        formulario.add(
+                crearCampo(
+                        "FECHA FIN (AAAA-MM-DD)",
+                        txtFechaFin
                 )
         );
 
@@ -144,22 +151,15 @@ public class PagosPanel extends JPanel {
 
         formulario.add(
                 crearCampo(
-                        "ESTADO",
-                        txtEstado
+                        "ID INQUILINO",
+                        txtIdInquilino
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "FECHA DE PAGO (AAAA-MM-DD)",
-                        txtFechaPago
-                )
-        );
-
-        formulario.add(
-                crearCampo(
-                        "ID CONTRATO",
-                        txtIdContrato
+                        "ID PROPIEDAD",
+                        txtIdPropiedad
                 )
         );
 
@@ -175,11 +175,11 @@ public class PagosPanel extends JPanel {
         modeloTabla = new DefaultTableModel(
                 new String[]{
                         "ID",
-                        "Mes",
+                        "Fecha Inicio",
+                        "Fecha Fin",
                         "Monto",
-                        "Estado",
-                        "Fecha Pago",
-                        "ID Contrato"
+                        "ID Inquilino",
+                        "ID Propiedad"
                 },
                 0
         );
@@ -388,24 +388,24 @@ public class PagosPanel extends JPanel {
 
     // GETTERS
 
-    public JTextField getTxtMes() {
-        return txtMes;
+    public JTextField getTxtFechaInicio() {
+        return txtFechaInicio;
+    }
+
+    public JTextField getTxtFechaFin() {
+        return txtFechaFin;
     }
 
     public JTextField getTxtMonto() {
         return txtMonto;
     }
 
-    public JTextField getTxtEstado() {
-        return txtEstado;
+    public JTextField getTxtIdInquilino() {
+        return txtIdInquilino;
     }
 
-    public JTextField getTxtFechaPago() {
-        return txtFechaPago;
-    }
-
-    public JTextField getTxtIdContrato() {
-        return txtIdContrato;
+    public JTextField getTxtIdPropiedad() {
+        return txtIdPropiedad;
     }
 
     public JTextField getTxtBuscar() {

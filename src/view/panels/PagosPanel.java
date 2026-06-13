@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import view.components.ModernScrollPane;
 
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class PropiedadesPanel extends JPanel {
+public class PagosPanel extends JPanel {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -22,13 +22,12 @@ public class PropiedadesPanel extends JPanel {
 
     private final Color COLOR_TEXTO_SECUNDARIO = new Color(170, 180, 190);
 
-    private JTextField txtDireccion;
-    private JTextField txtTipo;
-    private JTextField txtPrecioMensual;
-    private JTextField txtIdPropietario;
+    private JTextField txtMes;
+    private JTextField txtMonto;
+    private JTextField txtEstado;
+    private JTextField txtFechaPago;
+    private JTextField txtIdContrato;
     private JTextField txtBuscar;
-
-    private JCheckBox chkDisponible;
 
     private JButton btnGuardar;
     private JButton btnModificar;
@@ -39,7 +38,7 @@ public class PropiedadesPanel extends JPanel {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    public PropiedadesPanel() {
+    public PagosPanel() {
 
         setLayout(new BorderLayout(0, 20));
 
@@ -66,12 +65,12 @@ public class PropiedadesPanel extends JPanel {
         panelTitulos.setOpaque(false);
         panelTitulos.setLayout(new BoxLayout(panelTitulos, BoxLayout.Y_AXIS));
 
-        JLabel lblTitulo = new JLabel("Propiedades");
+        JLabel lblTitulo = new JLabel("Pagos");
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
 
         JLabel lblSubtitulo =
-                new JLabel("Administración de propiedades registradas");
+                new JLabel("Administración de pagos registrados");
 
         lblSubtitulo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         lblSubtitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -123,49 +122,44 @@ public class PropiedadesPanel extends JPanel {
                 )
         );
 
-        txtDireccion = crearInputElegante(1);
-        txtTipo = crearInputElegante(1);
-        txtPrecioMensual = crearInputElegante(1);
-        txtIdPropietario = crearInputElegante(1);
-
-        chkDisponible = new JCheckBox("Disponible");
-        chkDisponible.setOpaque(false);
-        chkDisponible.setForeground(Color.WHITE);
-        chkDisponible.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        chkDisponible.setSelected(true);
+        txtMes = crearInputElegante(1);
+        txtMonto = crearInputElegante(1);
+        txtEstado = crearInputElegante(1);
+        txtFechaPago = crearInputElegante(1);
+        txtIdContrato = crearInputElegante(1);
 
         formulario.add(
                 crearCampo(
-                        "DIRECCIÓN",
-                        txtDireccion
+                        "MES",
+                        txtMes
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "TIPO DE PROPIEDAD",
-                        txtTipo
+                        "MONTO",
+                        txtMonto
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "PRECIO MENSUAL",
-                        txtPrecioMensual
-                )
-        );
-
-        formulario.add(
-                crearCampo(
-                        "ID DEL PROPIETARIO",
-                        txtIdPropietario
-                )
-        );
-
-        formulario.add(
-                crearCampoCheck(
                         "ESTADO",
-                        chkDisponible
+                        txtEstado
+                )
+        );
+
+        formulario.add(
+                crearCampo(
+                        "FECHA DE PAGO (AAAA-MM-DD)",
+                        txtFechaPago
+                )
+        );
+
+        formulario.add(
+                crearCampo(
+                        "ID CONTRATO",
+                        txtIdContrato
                 )
         );
 
@@ -181,11 +175,11 @@ public class PropiedadesPanel extends JPanel {
         modeloTabla = new DefaultTableModel(
                 new String[]{
                         "ID",
-                        "Dirección",
-                        "Tipo",
-                        "Precio",
-                        "Disponible",
-                        "ID Propietario"
+                        "Mes",
+                        "Monto",
+                        "Estado",
+                        "Fecha Pago",
+                        "ID Contrato"
                 },
                 0
         );
@@ -288,26 +282,6 @@ public class PropiedadesPanel extends JPanel {
         return panel;
     }
 
-    private JPanel crearCampoCheck(
-            String titulo,
-            JCheckBox check
-    ) {
-
-        JPanel panel = new JPanel(new BorderLayout(0, 8));
-
-        panel.setOpaque(false);
-
-        JLabel lbl = new JLabel(titulo);
-
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 12));
-        lbl.setForeground(COLOR_ACCENTO_ORO);
-
-        panel.add(lbl, BorderLayout.NORTH);
-        panel.add(check, BorderLayout.CENTER);
-
-        return panel;
-    }
-
     private JTextField crearInputElegante(int cols) {
 
         JTextField campo = new JTextField(cols);
@@ -384,7 +358,7 @@ public class PropiedadesPanel extends JPanel {
         return btn;
     }
 
-     private void estilizarTabla(JTable tabla) {
+    private void estilizarTabla(JTable tabla) {
 
         tabla.setRowHeight(38);
 
@@ -412,32 +386,30 @@ public class PropiedadesPanel extends JPanel {
         header.setPreferredSize(new Dimension(0, 42));
     }
 
-
-
     // GETTERS
 
-    public JTextField getTxtDireccion() {
-        return txtDireccion;
+    public JTextField getTxtMes() {
+        return txtMes;
     }
 
-    public JTextField getTxtTipo() {
-        return txtTipo;
+    public JTextField getTxtMonto() {
+        return txtMonto;
     }
 
-    public JTextField getTxtPrecioMensual() {
-        return txtPrecioMensual;
+    public JTextField getTxtEstado() {
+        return txtEstado;
     }
 
-    public JTextField getTxtIdPropietario() {
-        return txtIdPropietario;
+    public JTextField getTxtFechaPago() {
+        return txtFechaPago;
+    }
+
+    public JTextField getTxtIdContrato() {
+        return txtIdContrato;
     }
 
     public JTextField getTxtBuscar() {
         return txtBuscar;
-    }
-
-    public JCheckBox getChkDisponible() {
-        return chkDisponible;
     }
 
     public JButton getBtnGuardar() {

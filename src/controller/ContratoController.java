@@ -2,7 +2,7 @@ package controller;
 
 import model.Contrato;
 import repository.ContratoDAO;
-import view.ContratosPanel;
+import view.panels.ContratosPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

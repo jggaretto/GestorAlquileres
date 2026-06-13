@@ -2,7 +2,7 @@ package controller;
 
 import model.Propietario;
 import repository.PropietarioDAO;
-import view.PropietariosPanel;
+import view.panels.PropietariosPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

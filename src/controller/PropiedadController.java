@@ -2,7 +2,7 @@ package controller;
 
 import model.Propiedad;
 import repository.PropiedadDAO;
-import view.PropiedadesPanel;
+import view.panels.PropiedadesPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import view.components.ModernScrollPane;
 
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class PropietariosPanel extends JPanel {
+public class PropiedadesPanel extends JPanel {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -20,14 +20,15 @@ public class PropietariosPanel extends JPanel {
 
     private final Color COLOR_BORDE = new Color(45, 55, 65);
 
-
     private final Color COLOR_TEXTO_SECUNDARIO = new Color(170, 180, 190);
 
-    private JTextField txtNombre;
-    private JTextField txtApellido;
-    private JTextField txtTelefono;
-    private JTextField txtEmail;
+    private JTextField txtDireccion;
+    private JTextField txtTipo;
+    private JTextField txtPrecioMensual;
+    private JTextField txtIdPropietario;
     private JTextField txtBuscar;
+
+    private JCheckBox chkDisponible;
 
     private JButton btnGuardar;
     private JButton btnModificar;
@@ -38,7 +39,7 @@ public class PropietariosPanel extends JPanel {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    public PropietariosPanel() {
+    public PropiedadesPanel() {
 
         setLayout(new BorderLayout(0, 20));
 
@@ -46,8 +47,8 @@ public class PropietariosPanel extends JPanel {
 
         setBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(3,0,0,0,COLOR_ACCENTO_ORO),
-                        new EmptyBorder(25,30,25,30)
+                        BorderFactory.createMatteBorder(3, 0, 0, 0, COLOR_ACCENTO_ORO),
+                        new EmptyBorder(25, 30, 25, 30)
                 )
         );
 
@@ -65,11 +66,12 @@ public class PropietariosPanel extends JPanel {
         panelTitulos.setOpaque(false);
         panelTitulos.setLayout(new BoxLayout(panelTitulos, BoxLayout.Y_AXIS));
 
-        JLabel lblTitulo = new JLabel("Propietarios");
+        JLabel lblTitulo = new JLabel("Propiedades");
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
 
-        JLabel lblSubtitulo = new JLabel("Administración de propietarios registrados");
+        JLabel lblSubtitulo =
+                new JLabel("Administración de propiedades registradas");
 
         lblSubtitulo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         lblSubtitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -80,13 +82,19 @@ public class PropietariosPanel extends JPanel {
 
         header.add(panelTitulos, BorderLayout.WEST);
 
-        JPanel busqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel busqueda =
+                new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
 
         busqueda.setOpaque(false);
 
         txtBuscar = crearInputElegante(18);
 
-        btnBuscar = crearBoton("BUSCAR", COLOR_SIDEBAR, Color.WHITE);
+        btnBuscar =
+                crearBoton(
+                        "BUSCAR",
+                        COLOR_SIDEBAR,
+                        Color.WHITE
+                );
 
         busqueda.add(txtBuscar);
         busqueda.add(btnBuscar);
@@ -104,41 +112,63 @@ public class PropietariosPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel formulario =
-                new JPanel(new GridLayout(2, 2, 25, 20));
+                new JPanel(new GridLayout(0, 2, 25, 20));
 
         formulario.setBackground(COLOR_CARD);
 
-        formulario.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(COLOR_BORDE),
-                new EmptyBorder(25,25,25,25)
-                ));
+        formulario.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(COLOR_BORDE),
+                        new EmptyBorder(25, 25, 25, 25)
+                )
+        );
 
-        txtNombre = crearInputElegante(1);
-        txtApellido = crearInputElegante(1);
-        txtTelefono = crearInputElegante(1);
-        txtEmail = crearInputElegante(1);
+        txtDireccion = crearInputElegante(1);
+        txtTipo = crearInputElegante(1);
+        txtPrecioMensual = crearInputElegante(1);
+        txtIdPropietario = crearInputElegante(1);
 
-        formulario.add(crearCampo("NOMBRE DEL PROPIETARIO",txtNombre));
+        chkDisponible = new JCheckBox("Disponible");
+        chkDisponible.setOpaque(false);
+        chkDisponible.setForeground(Color.WHITE);
+        chkDisponible.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        chkDisponible.setSelected(true);
 
         formulario.add(
                 crearCampo(
-                        "APELLIDO",
-                        txtApellido
+                        "DIRECCIÓN",
+                        txtDireccion
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "TELÉFONO DE CONTACTO",
-                        txtTelefono
+                        "TIPO DE PROPIEDAD",
+                        txtTipo
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "CORREO ELECTRÓNICO",
-                        txtEmail
+                        "PRECIO MENSUAL",
+                        txtPrecioMensual
                 )
         );
+
+        formulario.add(
+                crearCampo(
+                        "ID DEL PROPIETARIO",
+                        txtIdPropietario
+                )
+        );
+
+        formulario.add(
+                crearCampoCheck(
+                        "ESTADO",
+                        chkDisponible
+                )
+        );
+
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -151,10 +181,11 @@ public class PropietariosPanel extends JPanel {
         modeloTabla = new DefaultTableModel(
                 new String[]{
                         "ID",
-                        "Nombre",
-                        "Apellido",
-                        "Teléfono",
-                        "Email"
+                        "Dirección",
+                        "Tipo",
+                        "Precio",
+                        "Disponible",
+                        "ID Propietario"
                 },
                 0
         );
@@ -183,17 +214,44 @@ public class PropietariosPanel extends JPanel {
 
     private JPanel crearPanelBotones() {
 
-        JPanel panel = new JPanel( new FlowLayout( FlowLayout.RIGHT, 10, 0));
+        JPanel panel =
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.RIGHT,
+                                10,
+                                0
+                        )
+                );
 
         panel.setOpaque(false);
 
-        btnLimpiar = crearBoton("LIMPIAR", new Color(90, 100, 115),Color.WHITE);
+        btnLimpiar =
+                crearBoton(
+                        "LIMPIAR",
+                        new Color(90, 100, 115),
+                        Color.WHITE
+                );
 
-        btnEliminar = crearBoton("ELIMINAR", new Color(153, 27, 27),Color.WHITE);
+        btnEliminar =
+                crearBoton(
+                        "ELIMINAR",
+                        new Color(153, 27, 27),
+                        Color.WHITE
+                );
 
-        btnModificar = crearBoton("MODIFICAR", COLOR_SIDEBAR, Color.WHITE);
+        btnModificar =
+                crearBoton(
+                        "MODIFICAR",
+                        COLOR_SIDEBAR,
+                        Color.WHITE
+                );
 
-        btnGuardar = crearBoton("GUARDAR", COLOR_ACCENTO_ORO, Color.BLACK);
+        btnGuardar =
+                crearBoton(
+                        "GUARDAR",
+                        COLOR_ACCENTO_ORO,
+                        Color.BLACK
+                );
 
         panel.add(btnLimpiar);
         panel.add(btnEliminar);
@@ -205,7 +263,7 @@ public class PropietariosPanel extends JPanel {
 
     private JPanel crearCampo(
             String titulo,
-            JTextField campo
+            JComponent campo
     ) {
 
         JPanel panel = new JPanel(new BorderLayout(0, 8));
@@ -215,13 +273,37 @@ public class PropietariosPanel extends JPanel {
         JLabel lbl = new JLabel(titulo);
 
         lbl.setFont(
-                new Font("SansSerif",Font.BOLD,12)
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        12
+                )
         );
 
         lbl.setForeground(COLOR_ACCENTO_ORO);
 
         panel.add(lbl, BorderLayout.NORTH);
         panel.add(campo, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private JPanel crearCampoCheck(
+            String titulo,
+            JCheckBox check
+    ) {
+
+        JPanel panel = new JPanel(new BorderLayout(0, 8));
+
+        panel.setOpaque(false);
+
+        JLabel lbl = new JLabel(titulo);
+
+        lbl.setFont(new Font("SansSerif", Font.BOLD, 12));
+        lbl.setForeground(COLOR_ACCENTO_ORO);
+
+        panel.add(lbl, BorderLayout.NORTH);
+        panel.add(check, BorderLayout.CENTER);
 
         return panel;
     }
@@ -290,7 +372,8 @@ public class PropietariosPanel extends JPanel {
                 )
         );
 
-        btn.setBorder(new EmptyBorder(
+        btn.setBorder(
+                new EmptyBorder(
                         12,
                         25,
                         12,
@@ -301,7 +384,7 @@ public class PropietariosPanel extends JPanel {
         return btn;
     }
 
-    private void estilizarTabla(JTable tabla) {
+     private void estilizarTabla(JTable tabla) {
 
         tabla.setRowHeight(38);
 
@@ -329,26 +412,32 @@ public class PropietariosPanel extends JPanel {
         header.setPreferredSize(new Dimension(0, 42));
     }
 
+
+
     // GETTERS
 
-    public JTextField getTxtNombre() {
-        return txtNombre;
+    public JTextField getTxtDireccion() {
+        return txtDireccion;
     }
 
-    public JTextField getTxtApellido() {
-        return txtApellido;
+    public JTextField getTxtTipo() {
+        return txtTipo;
     }
 
-    public JTextField getTxtTelefono() {
-        return txtTelefono;
+    public JTextField getTxtPrecioMensual() {
+        return txtPrecioMensual;
     }
 
-    public JTextField getTxtEmail() {
-        return txtEmail;
+    public JTextField getTxtIdPropietario() {
+        return txtIdPropietario;
     }
 
     public JTextField getTxtBuscar() {
         return txtBuscar;
+    }
+
+    public JCheckBox getChkDisponible() {
+        return chkDisponible;
     }
 
     public JButton getBtnGuardar() {

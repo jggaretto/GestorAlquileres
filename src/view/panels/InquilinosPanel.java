@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import view.components.ModernScrollPane;
 
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class ContratosPanel extends JPanel {
+public class InquilinosPanel extends JPanel {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -22,11 +22,10 @@ public class ContratosPanel extends JPanel {
 
     private final Color COLOR_TEXTO_SECUNDARIO = new Color(170, 180, 190);
 
-    private JTextField txtFechaInicio;
-    private JTextField txtFechaFin;
-    private JTextField txtMonto;
-    private JTextField txtIdInquilino;
-    private JTextField txtIdPropiedad;
+    private JTextField txtNombre;
+    private JTextField txtApellido;
+    private JTextField txtDni;
+    private JTextField txtTelefono;
     private JTextField txtBuscar;
 
     private JButton btnGuardar;
@@ -38,7 +37,7 @@ public class ContratosPanel extends JPanel {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    public ContratosPanel() {
+    public InquilinosPanel() {
 
         setLayout(new BorderLayout(0, 20));
 
@@ -65,12 +64,12 @@ public class ContratosPanel extends JPanel {
         panelTitulos.setOpaque(false);
         panelTitulos.setLayout(new BoxLayout(panelTitulos, BoxLayout.Y_AXIS));
 
-        JLabel lblTitulo = new JLabel("Contratos");
+        JLabel lblTitulo = new JLabel("Inquilinos");
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
 
         JLabel lblSubtitulo =
-                new JLabel("Administración de contratos registrados");
+                new JLabel("Administración de inquilinos registrados");
 
         lblSubtitulo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         lblSubtitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -111,7 +110,7 @@ public class ContratosPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel formulario =
-                new JPanel(new GridLayout(0, 2, 25, 20));
+                new JPanel(new GridLayout(2, 2, 25, 20));
 
         formulario.setBackground(COLOR_CARD);
 
@@ -122,47 +121,38 @@ public class ContratosPanel extends JPanel {
                 )
         );
 
-        txtFechaInicio = crearInputElegante(1);
-        txtFechaFin = crearInputElegante(1);
-        txtMonto = crearInputElegante(1);
-        txtIdInquilino = crearInputElegante(1);
-        txtIdPropiedad = crearInputElegante(1);
+        txtNombre = crearInputElegante(1);
+        txtApellido = crearInputElegante(1);
+        txtDni = crearInputElegante(1);
+        txtTelefono = crearInputElegante(1);
 
         formulario.add(
                 crearCampo(
-                        "FECHA INICIO (AAAA-MM-DD)",
-                        txtFechaInicio
+                        "NOMBRE DEL INQUILINO",
+                        txtNombre
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "FECHA FIN (AAAA-MM-DD)",
-                        txtFechaFin
+                        "APELLIDO",
+                        txtApellido
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "MONTO",
-                        txtMonto
+                        "DNI",
+                        txtDni
                 )
         );
 
         formulario.add(
                 crearCampo(
-                        "ID INQUILINO",
-                        txtIdInquilino
+                        "TELÉFONO DE CONTACTO",
+                        txtTelefono
                 )
         );
-
-        formulario.add(
-                crearCampo(
-                        "ID PROPIEDAD",
-                        txtIdPropiedad
-                )
-        );
-
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -175,11 +165,10 @@ public class ContratosPanel extends JPanel {
         modeloTabla = new DefaultTableModel(
                 new String[]{
                         "ID",
-                        "Fecha Inicio",
-                        "Fecha Fin",
-                        "Monto",
-                        "ID Inquilino",
-                        "ID Propiedad"
+                        "Nombre",
+                        "Apellido",
+                        "DNI",
+                        "Teléfono"
                 },
                 0
         );
@@ -257,7 +246,7 @@ public class ContratosPanel extends JPanel {
 
     private JPanel crearCampo(
             String titulo,
-            JComponent campo
+            JTextField campo
     ) {
 
         JPanel panel = new JPanel(new BorderLayout(0, 8));
@@ -358,7 +347,7 @@ public class ContratosPanel extends JPanel {
         return btn;
     }
 
-    private void estilizarTabla(JTable tabla) {
+     private void estilizarTabla(JTable tabla) {
 
         tabla.setRowHeight(38);
 
@@ -386,26 +375,23 @@ public class ContratosPanel extends JPanel {
         header.setPreferredSize(new Dimension(0, 42));
     }
 
+
     // GETTERS
 
-    public JTextField getTxtFechaInicio() {
-        return txtFechaInicio;
+    public JTextField getTxtNombre() {
+        return txtNombre;
     }
 
-    public JTextField getTxtFechaFin() {
-        return txtFechaFin;
+    public JTextField getTxtApellido() {
+        return txtApellido;
     }
 
-    public JTextField getTxtMonto() {
-        return txtMonto;
+    public JTextField getTxtDni() {
+        return txtDni;
     }
 
-    public JTextField getTxtIdInquilino() {
-        return txtIdInquilino;
-    }
-
-    public JTextField getTxtIdPropiedad() {
-        return txtIdPropiedad;
+    public JTextField getTxtTelefono() {
+        return txtTelefono;
     }
 
     public JTextField getTxtBuscar() {

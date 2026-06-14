@@ -28,8 +28,6 @@ public class PropiedadesPanel extends JPanel {
     private JTextField txtIdPropietario;
     private JTextField txtBuscar;
 
-    private JCheckBox chkDisponible;
-
     private JButton btnGuardar;
     private JButton btnModificar;
     private JButton btnEliminar;
@@ -38,6 +36,7 @@ public class PropiedadesPanel extends JPanel {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
+    
 
     public PropiedadesPanel() {
 
@@ -82,26 +81,18 @@ public class PropiedadesPanel extends JPanel {
 
         header.add(panelTitulos, BorderLayout.WEST);
 
-        JPanel busqueda =
-                new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel busqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+busqueda.setOpaque(false);
 
-        busqueda.setOpaque(false);
+txtBuscar = crearInputElegante(18);
+btnBuscar = crearBoton("BUSCAR", COLOR_SIDEBAR, Color.WHITE);
 
-        txtBuscar = crearInputElegante(18);
+busqueda.add(txtBuscar);
+busqueda.add(btnBuscar);
 
-        btnBuscar =
-                crearBoton(
-                        "BUSCAR",
-                        COLOR_SIDEBAR,
-                        Color.WHITE
-                );
+header.add(busqueda, BorderLayout.EAST);
 
-        busqueda.add(txtBuscar);
-        busqueda.add(btnBuscar);
-
-        header.add(busqueda, BorderLayout.EAST);
-
-        return header;
+return header;
     }
 
     private JPanel crearContenedorCuerpo() {
@@ -127,12 +118,6 @@ public class PropiedadesPanel extends JPanel {
         txtTipo = crearInputElegante(1);
         txtPrecioMensual = crearInputElegante(1);
         txtIdPropietario = crearInputElegante(1);
-
-        chkDisponible = new JCheckBox("Disponible");
-        chkDisponible.setOpaque(false);
-        chkDisponible.setForeground(Color.WHITE);
-        chkDisponible.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        chkDisponible.setSelected(true);
 
         formulario.add(
                 crearCampo(
@@ -161,14 +146,6 @@ public class PropiedadesPanel extends JPanel {
                         txtIdPropietario
                 )
         );
-
-        formulario.add(
-                crearCampoCheck(
-                        "ESTADO",
-                        chkDisponible
-                )
-        );
-
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -291,7 +268,7 @@ public class PropiedadesPanel extends JPanel {
     private JPanel crearCampoCheck(
             String titulo,
             JCheckBox check
-    ) {
+         ) {
 
         JPanel panel = new JPanel(new BorderLayout(0, 8));
 
@@ -436,10 +413,6 @@ public class PropiedadesPanel extends JPanel {
         return txtBuscar;
     }
 
-    public JCheckBox getChkDisponible() {
-        return chkDisponible;
-    }
-
     public JButton getBtnGuardar() {
         return btnGuardar;
     }
@@ -463,4 +436,5 @@ public class PropiedadesPanel extends JPanel {
     public JTable getTabla() {
         return tabla;
     }
+   
 }

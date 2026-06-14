@@ -1,9 +1,9 @@
 package repository;
 
-import model.Inquilino;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Inquilino;
 
 public class InquilinoDAO {
 
@@ -110,15 +110,15 @@ public class InquilinoDAO {
         return null;
     }
 
-    // --- BUSCAR POR NOMBRE/APELLIDO O ID ---
+    // --- BUSCAR POR NOMBRE/APELLIDO - DNI/ID ---
     public List<Inquilino> buscar(String texto) {
         List<Inquilino> lista = new ArrayList<>();
         String sql;
 
-        if (texto.matches("\\d+")) {
-            sql = "SELECT * FROM inquilinos WHERE id = ?";
+        if (texto.matches("\\d+")) {// d+
+            sql = "SELECT * FROM inquilinos WHERE id = ? OR dni = ?";
         } else {
-            sql = "SELECT * FROM inquilinos WHERE nombre LIKE ? OR apellido LIKE ?";
+            sql = "SELECT * FROM inquilinos WHERE nombre LIKE ? OR apellido LIKE ? OR CONCAT(nombre, ' ', apellido) LIKE ?";
         }
 
         try (Connection conn = Conexion.getConexion();
@@ -126,10 +126,12 @@ public class InquilinoDAO {
 
             if (texto.matches("\\d+")) {
                 ps.setInt(1, Integer.parseInt(texto));
+                ps.setString(2, texto); //Agregado para buscar DNI
             } else {
                 String patron = "%" + texto + "%";
                 ps.setString(1, patron);
                 ps.setString(2, patron);
+                ps.setString(3, patron);
             }
 
             ResultSet rs = ps.executeQuery();

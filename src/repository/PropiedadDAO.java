@@ -74,13 +74,22 @@ public class PropiedadDAO {
             return false;
         }
     }
-    public List<Propiedad> buscar(String texto) {
+public List<Propiedad> buscar(String texto) {
     List<Propiedad> lista = new ArrayList<>();
-    String sql = "SELECT * FROM propiedades WHERE direccion LIKE ? OR tipo LIKE ?";
+    String sql = "SELECT * FROM propiedades WHERE " +
+                 "CAST(id AS CHAR) LIKE ? OR " +
+                 "direccion LIKE ? OR " +
+                 "tipo LIKE ? OR " +
+                 "CAST(precio_mensual AS CHAR) LIKE ? OR " +
+                 "CAST(id_propietario AS CHAR) LIKE ?";
     try (Connection conn = Conexion.getConexion();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, "%" + texto + "%");
-        ps.setString(2, "%" + texto + "%");
+        String like = "%" + texto + "%";
+        ps.setString(1, like);
+        ps.setString(2, like);
+        ps.setString(3, like);
+        ps.setString(4, like);
+        ps.setString(5, like);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             lista.add(new Propiedad(
@@ -97,4 +106,5 @@ public class PropiedadDAO {
     }
     return lista;
 }
+
 }

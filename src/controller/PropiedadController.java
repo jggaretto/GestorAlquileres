@@ -47,7 +47,7 @@ public class PropiedadController {
                 panel.getTxtDireccion().getText().trim(),
                 panel.getTxtTipo().getText().trim(),
                 Double.parseDouble(panel.getTxtPrecioMensual().getText().trim()),
-                panel.getChkDisponible().isSelected(),
+                true,
                 Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
             if (dao.agregar(p)) {
@@ -77,7 +77,7 @@ public class PropiedadController {
                 panel.getTxtDireccion().getText().trim(),
                 panel.getTxtTipo().getText().trim(),
                 Double.parseDouble(panel.getTxtPrecioMensual().getText().trim()),
-                panel.getChkDisponible().isSelected(),
+                true,
                 Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
             if (dao.actualizar(p)) {
@@ -113,15 +113,15 @@ public class PropiedadController {
     private void listarTodos() {
         cargarTabla(dao.listar());
     }
-
-    private void buscar() {
-        String texto = panel.getTxtBuscar().getText().trim();
-        if (texto.isEmpty()) {
-            listarTodos();
-            return;
-        }
-        cargarTabla(dao.buscar(texto));
+private void buscar() {
+    String valor = panel.getTxtBuscar().getText().trim();
+    if (valor.isEmpty()) {
+        listarTodos();
+        return;
     }
+    cargarTabla(dao.buscar(valor));
+}
+
 
     private void cargarTabla(List<Propiedad> lista) {
         DefaultTableModel modelo = (DefaultTableModel) panel.getTabla().getModel();
@@ -146,7 +146,6 @@ public class PropiedadController {
         panel.getTxtDireccion().setText(modelo.getValueAt(fila, 1).toString());
         panel.getTxtTipo().setText(modelo.getValueAt(fila, 2).toString());
         panel.getTxtPrecioMensual().setText(modelo.getValueAt(fila, 3).toString());
-        panel.getChkDisponible().setSelected(modelo.getValueAt(fila, 4).toString().equals("Sí"));
         panel.getTxtIdPropietario().setText(modelo.getValueAt(fila, 5).toString());
     }
 
@@ -155,7 +154,6 @@ public class PropiedadController {
         panel.getTxtTipo().setText("");
         panel.getTxtPrecioMensual().setText("");
         panel.getTxtIdPropietario().setText("");
-        panel.getChkDisponible().setSelected(true);
         panel.getTxtBuscar().setText("");
         panel.getTabla().clearSelection();
         idSeleccionado = -1;

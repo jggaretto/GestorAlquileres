@@ -265,26 +265,6 @@ return header;
         return panel;
     }
 
-    private JPanel crearCampoCheck(
-            String titulo,
-            JCheckBox check
-         ) {
-
-        JPanel panel = new JPanel(new BorderLayout(0, 8));
-
-        panel.setOpaque(false);
-
-        JLabel lbl = new JLabel(titulo);
-
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 12));
-        lbl.setForeground(COLOR_ACCENTO_ORO);
-
-        panel.add(lbl, BorderLayout.NORTH);
-        panel.add(check, BorderLayout.CENTER);
-
-        return panel;
-    }
-
     private JTextField crearInputElegante(int cols) {
 
         JTextField campo = new JTextField(cols);

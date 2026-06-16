@@ -40,6 +40,8 @@ public class ReportesPanel extends JPanel {
     public ReportesPanel() {
         setLayout(new BorderLayout(0, 20));
         setBackground(COLOR_FONDO);
+        setOpaque(false);
+        _cargarFondo();
         setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(3, 0, 0, 0, COLOR_ACCENTO),
             new EmptyBorder(25, 30, 25, 30)
@@ -312,4 +314,27 @@ public class ReportesPanel extends JPanel {
             return this;
         }
     }
+
+    // ── Fondo: edificio-menu.jpg con overlay oscuro ───────────────────────────
+    private java.awt.Image _imagenFondo;
+    private void _cargarFondo() {
+        java.net.URL url = getClass().getResource("/assets/edificio-menu.jpg");
+        if (url != null) _imagenFondo = new javax.swing.ImageIcon(url).getImage();
+    }
+
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+        if (_imagenFondo != null) {
+            g2.drawImage(_imagenFondo, 0, 0, getWidth(), getHeight(), this);
+            g2.setColor(new java.awt.Color(5, 10, 18, 215));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        } else {
+            g2.setColor(getBackground());
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+        g2.dispose();
+        super.paintComponent(g);
+    }
+
 }

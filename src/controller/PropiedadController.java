@@ -6,7 +6,9 @@ import view.panels.PropiedadesPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PropiedadController {
 
@@ -41,15 +43,17 @@ public class PropiedadController {
             JOptionPane.showMessageDialog(panel, "Completá todos los campos.");
             return;
         }
+
         try {
             Propiedad p = new Propiedad(
-                0,
-                panel.getTxtDireccion().getText().trim(),
-                panel.getTxtTipo().getText().trim(),
-                Double.parseDouble(panel.getTxtPrecioMensual().getText().trim()),
-                true,
-                Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
+                    0,
+                    panel.getTxtDireccion().getText().trim(),
+                    panel.getTxtTipo().getText().trim(),
+                    parsearMonto(panel.getTxtPrecioMensual().getText().trim()),
+                    true,
+                    Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
+
             if (dao.agregar(p)) {
                 JOptionPane.showMessageDialog(panel, "Propiedad guardada correctamente.");
                 limpiar();
@@ -67,19 +71,22 @@ public class PropiedadController {
             JOptionPane.showMessageDialog(panel, "Seleccioná una propiedad de la tabla.");
             return;
         }
+
         if (camposVacios()) {
             JOptionPane.showMessageDialog(panel, "Completá todos los campos.");
             return;
         }
+
         try {
             Propiedad p = new Propiedad(
-                idSeleccionado,
-                panel.getTxtDireccion().getText().trim(),
-                panel.getTxtTipo().getText().trim(),
-                Double.parseDouble(panel.getTxtPrecioMensual().getText().trim()),
-                true,
-                Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
+                    idSeleccionado,
+                    panel.getTxtDireccion().getText().trim(),
+                    panel.getTxtTipo().getText().trim(),
+                    parsearMonto(panel.getTxtPrecioMensual().getText().trim()),
+                    true,
+                    Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
+
             if (dao.actualizar(p)) {
                 JOptionPane.showMessageDialog(panel, "Propiedad modificada correctamente.");
                 limpiar();
@@ -97,8 +104,14 @@ public class PropiedadController {
             JOptionPane.showMessageDialog(panel, "Seleccioná una propiedad de la tabla.");
             return;
         }
+
         int confirm = JOptionPane.showConfirmDialog(
-            panel, "¿Seguro que querés eliminar esta propiedad?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                panel,
+                "¿Seguro que querés eliminar esta propiedad?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION
+        );
+
         if (confirm == JOptionPane.YES_OPTION) {
             if (dao.eliminar(idSeleccionado)) {
                 JOptionPane.showMessageDialog(panel, "Propiedad eliminada correctamente.");
@@ -113,27 +126,28 @@ public class PropiedadController {
     private void listarTodos() {
         cargarTabla(dao.listar());
     }
-private void buscar() {
-    String valor = panel.getTxtBuscar().getText().trim();
-    if (valor.isEmpty()) {
-        listarTodos();
-        return;
-    }
-    cargarTabla(dao.buscar(valor));
-}
 
+    private void buscar() {
+        String valor = panel.getTxtBuscar().getText().trim();
+        if (valor.isEmpty()) {
+            listarTodos();
+            return;
+        }
+        cargarTabla(dao.buscar(valor));
+    }
 
     private void cargarTabla(List<Propiedad> lista) {
         DefaultTableModel modelo = (DefaultTableModel) panel.getTabla().getModel();
         modelo.setRowCount(0);
+
         for (Propiedad p : lista) {
             modelo.addRow(new Object[]{
-                p.getId(),
-                p.getDireccion(),
-                p.getTipo(),
-                p.getPrecioMensual(),
-                p.isDisponible() ? "Sí" : "No",
-                p.getIdPropietario()
+                    p.getId(),
+                    p.getDireccion(),
+                    p.getTipo(),
+                    formatearMonto(p.getPrecioMensual()),
+                    p.isDisponible() ? "Sí" : "No",
+                    p.getIdPropietario()
             });
         }
     }
@@ -142,7 +156,7 @@ private void buscar() {
         int fila = panel.getTabla().getSelectedRow();
         DefaultTableModel modelo = (DefaultTableModel) panel.getTabla().getModel();
 
-        idSeleccionado = (int) modelo.getValueAt(fila, 0);
+        idSeleccionado = Integer.parseInt(modelo.getValueAt(fila, 0).toString());
         panel.getTxtDireccion().setText(modelo.getValueAt(fila, 1).toString());
         panel.getTxtTipo().setText(modelo.getValueAt(fila, 2).toString());
         panel.getTxtPrecioMensual().setText(modelo.getValueAt(fila, 3).toString());
@@ -161,8 +175,25 @@ private void buscar() {
 
     private boolean camposVacios() {
         return panel.getTxtDireccion().getText().trim().isEmpty()
-            || panel.getTxtTipo().getText().trim().isEmpty()
-            || panel.getTxtPrecioMensual().getText().trim().isEmpty()
-            || panel.getTxtIdPropietario().getText().trim().isEmpty();
+                || panel.getTxtTipo().getText().trim().isEmpty()
+                || panel.getTxtPrecioMensual().getText().trim().isEmpty()
+                || panel.getTxtIdPropietario().getText().trim().isEmpty();
+    }
+
+    private String formatearMonto(double monto) {
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-AR"));
+        formato.setMinimumFractionDigits(2);
+        formato.setMaximumFractionDigits(2);
+        return "$ " + formato.format(monto);
+    }
+
+    private double parsearMonto(String texto) {
+        String normalizado = texto
+                .replace("$", "")
+                .replace(" ", "")
+                .replace(".", "")
+                .replace(",", ".")
+                .trim();
+        return Double.parseDouble(normalizado);
     }
 }

@@ -16,8 +16,8 @@ public class PropietarioDAO {
             ps.setString(1, p.getNombre());
             ps.setString(2, p.getApellido());
             ps.setString(3, p.getDni());
-            ps.setString(3, p.getTelefono());
-            ps.setString(4, p.getEmail());
+            ps.setString(4, p.getTelefono());
+            ps.setString(5, p.getEmail());
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class PropietarioDAO {
 
     // --- UPDATE ---
     public boolean actualizar(Propietario p) {
-        String sql = "UPDATE propietarios SET nombre=?, apellido=?, telefono=?, email=? WHERE id=?";
+        String sql = "UPDATE propietarios SET nombre=?, apellido=?, dni=?, telefono=?, email=? WHERE id=?";
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 

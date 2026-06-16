@@ -9,12 +9,13 @@ public class PropietarioDAO {
 
     // --- INSERT ---
     public boolean agregar(Propietario p) {
-        String sql = "INSERT INTO propietarios (nombre, apellido, telefono, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO propietarios (nombre, apellido, dni, telefono, email) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombre());
             ps.setString(2, p.getApellido());
+            ps.setString(3, p.getDni());
             ps.setString(3, p.getTelefono());
             ps.setString(4, p.getEmail());
             return ps.executeUpdate() > 0;
@@ -38,9 +39,11 @@ public class PropietarioDAO {
                     rs.getInt("id"),
                     rs.getString("nombre"),
                     rs.getString("apellido"),
+                    rs.getString("dni"),
                     rs.getString("telefono"),
                     rs.getString("email")
                 ));
+            
             }
 
         } catch (Exception e) {
@@ -57,9 +60,10 @@ public class PropietarioDAO {
 
             ps.setString(1, p.getNombre());
             ps.setString(2, p.getApellido());
-            ps.setString(3, p.getTelefono());
-            ps.setString(4, p.getEmail());
-            ps.setInt(5, p.getId());
+            ps.setString(3, p.getDni());
+            ps.setString(4, p.getTelefono());
+            ps.setString(5, p.getEmail());
+            ps.setInt(6, p.getId());
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -83,13 +87,13 @@ public class PropietarioDAO {
         }
     }
 
-    // --- BUSCAR POR NOMBRE/APELLIDO O ID ---
+    // --- BUSCAR POR NOMBRE/APELLIDO / ID o DNI ---
     public List<Propietario> buscar(String texto) {
         List<Propietario> lista = new ArrayList<>();
         String sql;
 
         if (texto.matches("\\d+")) {
-            sql = "SELECT * FROM propietarios WHERE id = ?";
+            sql = "SELECT * FROM propietarios WHERE id = ? OR dni = ?";
         } else {
             sql = "SELECT * FROM propietarios WHERE nombre LIKE ? OR apellido LIKE ?";
         }
@@ -99,6 +103,7 @@ public class PropietarioDAO {
 
             if (texto.matches("\\d+")) {
                 ps.setInt(1, Integer.parseInt(texto));
+                ps.setString(2, texto);
             } else {
                 String patron = "%" + texto + "%";
                 ps.setString(1, patron);
@@ -111,6 +116,7 @@ public class PropietarioDAO {
                     rs.getInt("id"),
                     rs.getString("nombre"),
                     rs.getString("apellido"),
+                    rs.getString("dni"),
                     rs.getString("telefono"),
                     rs.getString("email")
                 ));

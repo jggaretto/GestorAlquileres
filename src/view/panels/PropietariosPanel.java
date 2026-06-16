@@ -25,6 +25,7 @@ public class PropietariosPanel extends JPanel {
 
     private JTextField txtNombre;
     private JTextField txtApellido;
+    private JTextField txtDni;
     private JTextField txtTelefono;
     private JTextField txtEmail;
     private JTextField txtBuscar;
@@ -114,6 +115,7 @@ public class PropietariosPanel extends JPanel {
 
         txtNombre = crearInputElegante(1);
         txtApellido = crearInputElegante(1);
+        txtDni = crearInputElegante(1);
         txtTelefono = crearInputElegante(1);
         txtEmail = crearInputElegante(1);
 
@@ -123,6 +125,13 @@ public class PropietariosPanel extends JPanel {
                 crearCampo(
                         "APELLIDO",
                         txtApellido
+                )
+        );
+
+        formulario.add (
+                crearCampo(
+                        "DNI",
+                        txtDni
                 )
         );
 
@@ -153,6 +162,7 @@ public class PropietariosPanel extends JPanel {
                         "ID",
                         "Nombre",
                         "Apellido",
+                        "DNI",
                         "Teléfono",
                         "Email"
                 },
@@ -337,6 +347,10 @@ public class PropietariosPanel extends JPanel {
 
     public JTextField getTxtApellido() {
         return txtApellido;
+    }
+
+    public JTextField getTxtDni() {
+        return txtDni;
     }
 
     public JTextField getTxtTelefono() {

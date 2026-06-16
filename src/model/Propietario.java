@@ -4,7 +4,8 @@ public class Propietario {
 
     private int id; 
     private String nombre;
-    private String apellido; 
+    private String apellido;
+    private String dni; 
     private String telefono;
     private String email;
 
@@ -13,18 +14,20 @@ public class Propietario {
     }
 
     //constructor sin id : para INSERT 
-    public Propietario(String nombre, String apellido, String telefono, String email) {
+    public Propietario(String nombre, String apellido, String dni, String telefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.telefono = telefono;
         this.email = email;
     }
 
     //constructor con id : para SELECT y UPDATE
-    public Propietario (int id,String nombre, String apellido, String telefono, String email) {
+    public Propietario (int id,String nombre, String apellido, String dni, String telefono, String email) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.telefono = telefono;
         this.email = email;
     }
@@ -38,6 +41,9 @@ public class Propietario {
 
     public String getApellido() { return apellido; }
     public void setApellido(String apellido) { this.apellido = apellido; }
+
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }

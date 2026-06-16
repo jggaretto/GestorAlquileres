@@ -120,6 +120,7 @@ public class PropietarioController {
                     p.getId(),
                     p.getNombre(),
                     p.getApellido(),
+                    p.getDni(),
                     p.getTelefono(),
                     p.getEmail()
             };
@@ -144,6 +145,7 @@ public class PropietarioController {
                 id,
                 panel.getTxtNombre().getText().trim(),
                 panel.getTxtApellido().getText().trim(),
+                panel.getTxtDni().getText().trim(),
                 panel.getTxtTelefono().getText().trim(),
                 panel.getTxtEmail().getText().trim()
         );
@@ -156,13 +158,15 @@ public class PropietarioController {
         idSeleccionado = Integer.parseInt(modelo.getValueAt(fila, 0).toString());
         panel.getTxtNombre().setText(modelo.getValueAt(fila, 1).toString());
         panel.getTxtApellido().setText(modelo.getValueAt(fila, 2).toString());
-        panel.getTxtTelefono().setText(modelo.getValueAt(fila, 3).toString());
-        panel.getTxtEmail().setText(modelo.getValueAt(fila, 4).toString());
+        panel.getTxtDni().setText(modelo.getValueAt(fila, 3).toString());
+        panel.getTxtTelefono().setText(modelo.getValueAt(fila, 4).toString());
+        panel.getTxtEmail().setText(modelo.getValueAt(fila, 5).toString());
     }
 
     private void limpiar() {
         panel.getTxtNombre().setText("");
         panel.getTxtApellido().setText("");
+        panel.getTxtDni().setText("");
         panel.getTxtTelefono().setText("");
         panel.getTxtEmail().setText("");
         panel.getTxtBuscar().setText("");
@@ -173,6 +177,7 @@ public class PropietarioController {
     private boolean camposVacios() {
         return panel.getTxtNombre().getText().trim().isEmpty()
                 || panel.getTxtApellido().getText().trim().isEmpty()
+                || panel.getTxtDni().getText().trim().isEmpty()
                 || panel.getTxtTelefono().getText().trim().isEmpty()
                 || panel.getTxtEmail().getText().trim().isEmpty();
     }

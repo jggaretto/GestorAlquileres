@@ -1,5 +1,9 @@
 package view.panels;
 
+import view.components.BotonEstilizado;
+import view.components.CampoPasswordEstilizado;
+import view.components.CampoTextoEstilizado;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -100,12 +104,7 @@ public class LoginPanel extends JPanel {
 
         card.add(Box.createVerticalStrut(20));
 
-        btnIngresar = new JButton("INGRESAR");
-        btnIngresar.setBackground(COLOR_ACCENTO);
-        btnIngresar.setForeground(Color.BLACK);
-        btnIngresar.setFont(new Font("SansSerif", Font.BOLD, 13));
-        btnIngresar.setFocusPainted(false);
-        btnIngresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnIngresar = new BotonEstilizado("INGRESAR", COLOR_ACCENTO, Color.BLACK);
         btnIngresar.setBorder(new EmptyBorder(13, 0, 13, 0));
         btnIngresar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
         btnIngresar.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -126,18 +125,10 @@ public class LoginPanel extends JPanel {
         lbl.setForeground(COLOR_ACCENTO);
         lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JTextField campo = esPassword ? new JPasswordField() : new JTextField();
-        campo.setBackground(new Color(30, 40, 52));
-        campo.setForeground(Color.WHITE);
-        campo.setCaretColor(COLOR_ACCENTO);
-        campo.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JTextField campo = esPassword ? new CampoPasswordEstilizado() : new CampoTextoEstilizado(1);
         campo.setAlignmentX(Component.LEFT_ALIGNMENT);
         campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
         campo.setPreferredSize(new Dimension(0, 48));
-        campo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE),
-            new EmptyBorder(10, 15, 10, 15)
-        ));
 
         if (esPassword) {
             txtContrasena = (JPasswordField) campo;

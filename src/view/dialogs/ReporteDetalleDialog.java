@@ -1,7 +1,9 @@
 package view.dialogs;
 
 import repository.ReportesDAO;
-import view.components.ModernScrollPane;
+import view.components.ScrollPaneModerno;
+import view.components.BotonEstilizado;
+import view.components.EstilizadorTabla;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -84,13 +86,7 @@ public class ReporteDetalleDialog extends JDialog {
         }
 
         JTable tabla = new JTable(modelo);
-        tabla.setRowHeight(36);
-        tabla.setBackground(COLOR_CARD);
-        tabla.setForeground(Color.WHITE);
-        tabla.setGridColor(COLOR_BORDE);
-        tabla.setShowVerticalLines(false);
-        tabla.setSelectionBackground(new Color(212, 175, 55, 60));
-        tabla.setSelectionForeground(Color.WHITE);
+        EstilizadorTabla.apply(tabla);
         tabla.setFont(new Font("SansSerif", Font.PLAIN, 13));
 
         // Colorear la columna Estado
@@ -98,13 +94,7 @@ public class ReporteDetalleDialog extends JDialog {
             new EstadoRenderer()
         );
 
-        JTableHeader th = tabla.getTableHeader();
-        th.setBackground(new Color(15, 20, 25));
-        th.setForeground(COLOR_ACCENTO);
-        th.setFont(new Font("SansSerif", Font.BOLD, 13));
-        th.setPreferredSize(new Dimension(0, 40));
-
-        JScrollPane scroll = new ModernScrollPane(tabla);
+        JScrollPane scroll = new ScrollPaneModerno(tabla);
         scroll.setBorder(BorderFactory.createCompoundBorder(
             new EmptyBorder(20, 20, 10, 20),
             BorderFactory.createLineBorder(COLOR_BORDE)
@@ -117,13 +107,7 @@ public class ReporteDetalleDialog extends JDialog {
         JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 12));
         footer.setBackground(COLOR_FONDO);
 
-        JButton btnCerrar = new JButton("CERRAR");
-        btnCerrar.setBackground(COLOR_SIDEBAR);
-        btnCerrar.setForeground(Color.WHITE);
-        btnCerrar.setFont(new Font("SansSerif", Font.BOLD, 12));
-        btnCerrar.setFocusPainted(false);
-        btnCerrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnCerrar.setBorder(new EmptyBorder(10, 22, 10, 22));
+        JButton btnCerrar = new BotonEstilizado("CERRAR", COLOR_SIDEBAR, Color.WHITE);
         btnCerrar.addActionListener(e -> dispose());
         footer.add(btnCerrar);
         add(footer, BorderLayout.SOUTH);

@@ -1,6 +1,11 @@
 package view.panels;
 
-import view.components.ModernScrollPane;
+import view.components.ScrollPaneModerno;
+import view.components.CampoFormulario;
+import view.components.BotonEstilizado;
+import view.components.CampoTextoEstilizado;
+import view.components.EstilizadorTabla;
+import view.components.PanelFondoImagen;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class PagosPanel extends JPanel {
+public class PagosPanel extends PanelFondoImagen {
 
     // Tema Dark Luxury
     private final Color COLOR_FONDO = new Color(11, 18, 25);
@@ -40,11 +45,10 @@ public class PagosPanel extends JPanel {
 
     public PagosPanel() {
 
-        setLayout(new BorderLayout(0, 20));
+        super(new BorderLayout(0, 20), new Color(5, 10, 18, 215));
 
         setBackground(COLOR_FONDO);
         setOpaque(false);
-        _cargarFondo();
 
         setBorder(
                 BorderFactory.createCompoundBorder(
@@ -190,7 +194,7 @@ public class PagosPanel extends JPanel {
 
         estilizarTabla(tabla);
 
-        JScrollPane scroll = new ModernScrollPane(tabla);
+        JScrollPane scroll = new ScrollPaneModerno(tabla);
 
         scroll.setBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE)
@@ -261,64 +265,11 @@ public class PagosPanel extends JPanel {
             String titulo,
             JComponent campo
     ) {
-
-        JPanel panel = new JPanel(new BorderLayout(0, 8));
-
-        panel.setOpaque(false);
-
-        JLabel lbl = new JLabel(titulo);
-
-        lbl.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        12
-                )
-        );
-
-        lbl.setForeground(COLOR_ACCENTO_ORO);
-
-        panel.add(lbl, BorderLayout.NORTH);
-        panel.add(campo, BorderLayout.CENTER);
-
-        return panel;
+        return new CampoFormulario(titulo, campo);
     }
 
     private JTextField crearInputElegante(int cols) {
-
-        JTextField campo = new JTextField(cols);
-
-        campo.setBackground(
-                new Color(30, 40, 52)
-        );
-
-        campo.setForeground(Color.WHITE);
-
-        campo.setCaretColor(COLOR_ACCENTO_ORO);
-
-        campo.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.PLAIN,
-                        14
-                )
-        );
-
-        campo.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(
-                                COLOR_BORDE
-                        ),
-                        new EmptyBorder(
-                                12,
-                                18,
-                                12,
-                                18
-                        )
-                )
-        );
-
-        return campo;
+        return new CampoTextoEstilizado(cols);
     }
 
     private JButton crearBoton(
@@ -326,66 +277,11 @@ public class PagosPanel extends JPanel {
             Color fondo,
             Color textoColor
     ) {
-
-        JButton btn = new JButton(texto);
-
-        btn.setBackground(fondo);
-        btn.setForeground(textoColor);
-
-        btn.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        12
-                )
-        );
-
-        btn.setFocusPainted(false);
-
-        btn.setCursor(
-                new Cursor(
-                        Cursor.HAND_CURSOR
-                )
-        );
-
-        btn.setBorder(
-                new EmptyBorder(
-                        12,
-                        25,
-                        12,
-                        25
-                )
-        );
-
-        return btn;
+        return new BotonEstilizado(texto, fondo, textoColor);
     }
 
     private void estilizarTabla(JTable tabla) {
-
-        tabla.setRowHeight(38);
-
-        tabla.setBackground(COLOR_CARD);
-
-        tabla.setForeground(Color.WHITE);
-
-        tabla.setGridColor(COLOR_BORDE);
-
-        tabla.setShowVerticalLines(false);
-
-        tabla.setSelectionBackground(new Color(212,175,55,70));
-
-        tabla.setSelectionForeground(Color.WHITE);
-
-        JTableHeader header =
-                tabla.getTableHeader();
-
-        header.setBackground(new Color(15, 20, 25));
-
-        header.setForeground(COLOR_ACCENTO_ORO);
-
-        header.setFont(new Font("SansSerif",Font.BOLD,13));
-
-        header.setPreferredSize(new Dimension(0, 42));
+        EstilizadorTabla.apply(tabla);
     }
 
     // GETTERS
@@ -436,28 +332,6 @@ public class PagosPanel extends JPanel {
 
     public JTable getTabla() {
         return tabla;
-    }
-
-    // ── Fondo: edificio-menu.jpg con overlay oscuro ───────────────────────────
-    private java.awt.Image _imagenFondo;
-    private void _cargarFondo() {
-        java.net.URL url = getClass().getResource("/assets/edificio-menu.jpg");
-        if (url != null) _imagenFondo = new javax.swing.ImageIcon(url).getImage();
-    }
-
-    @Override
-    protected void paintComponent(java.awt.Graphics g) {
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
-        if (_imagenFondo != null) {
-            g2.drawImage(_imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            g2.setColor(new java.awt.Color(5, 10, 18, 215));
-            g2.fillRect(0, 0, getWidth(), getHeight());
-        } else {
-            g2.setColor(getBackground());
-            g2.fillRect(0, 0, getWidth(), getHeight());
-        }
-        g2.dispose();
-        super.paintComponent(g);
     }
 
 }

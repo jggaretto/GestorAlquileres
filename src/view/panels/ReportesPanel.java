@@ -1,7 +1,10 @@
 package view.panels;
 
 import view.dialogs.ReporteDetalleDialog;
-import view.components.ModernScrollPane;
+import view.components.ScrollPaneModerno;
+import view.components.BotonEstilizado;
+import view.components.EstilizadorTabla;
+import view.components.PanelFondoImagen;
 import repository.ReportesDAO;
 
 import javax.swing.*;
@@ -21,7 +24,7 @@ import java.util.Map;
  *  • Doble clic en una fila → ReporteDetalleDialog (detalle de pagos)
  *  • Botón "EXPORTAR" → guarda un .txt en el escritorio
  */
-public class ReportesPanel extends JPanel {
+public class ReportesPanel extends PanelFondoImagen {
 
     // ── Paleta ───────────────────────────────────────────────────────────────
     private final Color COLOR_FONDO     = new Color(11, 18, 25);
@@ -38,10 +41,9 @@ public class ReportesPanel extends JPanel {
     private final ReportesDAO dao = new ReportesDAO();
 
     public ReportesPanel() {
-        setLayout(new BorderLayout(0, 20));
+        super(new BorderLayout(0, 20), new Color(5, 10, 18, 215));
         setBackground(COLOR_FONDO);
         setOpaque(false);
-        _cargarFondo();
         setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(3, 0, 0, 0, COLOR_ACCENTO),
             new EmptyBorder(25, 30, 25, 30)
@@ -155,25 +157,13 @@ public class ReportesPanel extends JPanel {
         };
 
         tabla = new JTable(modeloTabla);
-        tabla.setRowHeight(38);
-        tabla.setBackground(COLOR_CARD);
-        tabla.setForeground(Color.WHITE);
-        tabla.setGridColor(COLOR_BORDE);
-        tabla.setShowVerticalLines(false);
-        tabla.setSelectionBackground(new Color(212, 175, 55, 70));
-        tabla.setSelectionForeground(Color.WHITE);
+        EstilizadorTabla.apply(tabla);
         tabla.setFont(new Font("SansSerif", Font.PLAIN, 13));
 
         // Renderer para columna "Pendientes"
         tabla.getColumnModel().getColumn(5).setCellRenderer(
             new PendientesRenderer()
         );
-
-        JTableHeader th = tabla.getTableHeader();
-        th.setBackground(new Color(15, 20, 25));
-        th.setForeground(COLOR_ACCENTO);
-        th.setFont(new Font("SansSerif", Font.BOLD, 13));
-        th.setPreferredSize(new Dimension(0, 42));
 
         // Doble clic → detalle
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -185,7 +175,7 @@ public class ReportesPanel extends JPanel {
             }
         });
 
-        JScrollPane scroll = new ModernScrollPane(tabla);
+        JScrollPane scroll = new ScrollPaneModerno(tabla);
         scroll.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
         scroll.getViewport().setBackground(COLOR_CARD);
         cuerpo.add(scroll, BorderLayout.CENTER);
@@ -287,14 +277,7 @@ public class ReportesPanel extends JPanel {
     // HELPERS
     // ─────────────────────────────────────────────────────────────────────────
     private JButton crearBoton(String texto, Color fondo, Color textoColor) {
-        JButton btn = new JButton(texto);
-        btn.setBackground(fondo);
-        btn.setForeground(textoColor);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 12));
-        btn.setFocusPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setBorder(new EmptyBorder(12, 25, 12, 25));
-        return btn;
+        return new BotonEstilizado(texto, fondo, textoColor);
     }
 
     // Renderer: pinta en rojo los pendientes > 0
@@ -313,28 +296,6 @@ public class ReportesPanel extends JPanel {
             setOpaque(true);
             return this;
         }
-    }
-
-    // ── Fondo: edificio-menu.jpg con overlay oscuro ───────────────────────────
-    private java.awt.Image _imagenFondo;
-    private void _cargarFondo() {
-        java.net.URL url = getClass().getResource("/assets/edificio-menu.jpg");
-        if (url != null) _imagenFondo = new javax.swing.ImageIcon(url).getImage();
-    }
-
-    @Override
-    protected void paintComponent(java.awt.Graphics g) {
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
-        if (_imagenFondo != null) {
-            g2.drawImage(_imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            g2.setColor(new java.awt.Color(5, 10, 18, 215));
-            g2.fillRect(0, 0, getWidth(), getHeight());
-        } else {
-            g2.setColor(getBackground());
-            g2.fillRect(0, 0, getWidth(), getHeight());
-        }
-        g2.dispose();
-        super.paintComponent(g);
     }
 
 }

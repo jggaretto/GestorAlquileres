@@ -11,6 +11,7 @@ import controller.InquilinoController;
 import controller.PagoController;
 import controller.PropiedadController;
 import controller.PropietarioController;
+import view.components.PanelFondoImagen;
 
 public class MenuPanel extends JPanel {
     private JPanel panelContenido; 
@@ -186,23 +187,8 @@ public class MenuPanel extends JPanel {
     
     private JPanel crearPanelBienvenida() {
         // Panel con imagen de fondo y texto superpuesto
-        JPanel panelHero = new JPanel(new GridBagLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    java.net.URL imgUrl = getClass().getResource("/assets/edificio-menu.jpg");
-                    if (imgUrl != null) {
-                        Image img = new ImageIcon(imgUrl).getImage();
-                        g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
-                        g.setColor(new Color(0, 0, 0, 130)); 
-                        g.fillRect(0, 0, getWidth(), getHeight());
-                    }
-                } catch (Exception e) {
-                    // Si falla la imagen, queda el color de fondo normal
-                }
-            }
-        };
+        JPanel panelHero = new PanelFondoImagen(new GridBagLayout(), new Color(0, 0, 0, 130));
+        panelHero.setBackground(COLOR_FONDO);
         
         // Configuración del panel de bienvenida
         GridBagConstraints gbc = new GridBagConstraints();

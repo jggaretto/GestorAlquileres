@@ -12,7 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 
-public class ModernScrollPane extends JScrollPane {
+public class ScrollPaneModerno extends JScrollPane {
 
     private static final Color COLOR_CARD = new Color(20, 28, 38);
     private static final Color COLOR_BORDE = new Color(45, 55, 65);
@@ -20,7 +20,7 @@ public class ModernScrollPane extends JScrollPane {
     private static final Color COLOR_THUMB = new Color(212, 175, 55);
     private static final Color COLOR_THUMB_HOVER = new Color(232, 197, 82);
 
-    public ModernScrollPane(JComponent view) {
+    public ScrollPaneModerno(JComponent view) {
         super(view);
         setBorder(javax.swing.BorderFactory.createLineBorder(COLOR_BORDE));
         setBackground(COLOR_CARD);
@@ -46,10 +46,10 @@ public class ModernScrollPane extends JScrollPane {
         barra.setPreferredSize(new Dimension(12, 12));
         barra.setUnitIncrement(16);
         barra.setBlockIncrement(80);
-        barra.setUI(new ModernScrollBarUI());
+        barra.setUI(new BarraScrollModernaUI());
     }
 
-    private static class ModernScrollBarUI extends BasicScrollBarUI {
+    private static class BarraScrollModernaUI extends BasicScrollBarUI {
 
         @Override
         protected void configureScrollBarColors() {

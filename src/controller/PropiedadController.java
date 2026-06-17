@@ -50,7 +50,7 @@ public class PropiedadController {
                     panel.getTxtDireccion().getText().trim(),
                     panel.getTxtTipo().getText().trim(),
                     parsearMonto(panel.getTxtPrecioMensual().getText().trim()),
-                    true,
+                    estaDisponibleSeleccionada(),
                     Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
 
@@ -83,7 +83,7 @@ public class PropiedadController {
                     panel.getTxtDireccion().getText().trim(),
                     panel.getTxtTipo().getText().trim(),
                     parsearMonto(panel.getTxtPrecioMensual().getText().trim()),
-                    true,
+                    estaDisponibleSeleccionada(),
                     Integer.parseInt(panel.getTxtIdPropietario().getText().trim())
             );
 
@@ -160,6 +160,7 @@ public class PropiedadController {
         panel.getTxtDireccion().setText(modelo.getValueAt(fila, 1).toString());
         panel.getTxtTipo().setText(modelo.getValueAt(fila, 2).toString());
         panel.getTxtPrecioMensual().setText(modelo.getValueAt(fila, 3).toString());
+        panel.getCmbDisponible().setSelectedIndex(esValorDisponible(modelo.getValueAt(fila, 4)) ? 0 : 1);
         panel.getTxtIdPropietario().setText(modelo.getValueAt(fila, 5).toString());
     }
 
@@ -169,8 +170,17 @@ public class PropiedadController {
         panel.getTxtPrecioMensual().setText("");
         panel.getTxtIdPropietario().setText("");
         panel.getTxtBuscar().setText("");
+        panel.getCmbDisponible().setSelectedIndex(0);
         panel.getTabla().clearSelection();
         idSeleccionado = -1;
+    }
+
+    private boolean estaDisponibleSeleccionada() {
+        return panel.getCmbDisponible().getSelectedIndex() == 0;
+    }
+
+    private boolean esValorDisponible(Object valor) {
+        return valor != null && valor.toString().trim().toLowerCase(Locale.ROOT).startsWith("s");
     }
 
     private boolean camposVacios() {

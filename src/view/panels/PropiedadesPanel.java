@@ -32,6 +32,7 @@ public class PropiedadesPanel extends PanelFondoImagen {
     private JTextField txtPrecioMensual;
     private JTextField txtIdPropietario;
     private JTextField txtBuscar;
+    private JComboBox<String> cmbDisponible;
 
     private JButton btnGuardar;
     private JButton btnModificar;
@@ -124,6 +125,7 @@ return header;
         txtTipo = crearInputElegante(1);
         txtPrecioMensual = crearInputElegante(1);
         txtIdPropietario = crearInputElegante(1);
+        cmbDisponible = crearComboDisponibilidad();
 
         formulario.add(
                 crearCampo(
@@ -150,6 +152,13 @@ return header;
                 crearCampo(
                         "ID DEL PROPIETARIO",
                         txtIdPropietario
+                )
+        );
+
+        formulario.add(
+                crearCampo(
+                        "DISPONIBILIDAD",
+                        cmbDisponible
                 )
         );
 
@@ -255,6 +264,43 @@ return header;
         return new CampoTextoEstilizado(cols);
     }
 
+    private JComboBox<String> crearComboDisponibilidad() {
+        JComboBox<String> combo = new JComboBox<>(new String[]{"Disponible", "No disponible"});
+        combo.setBackground(new Color(30, 40, 52));
+        combo.setForeground(Color.WHITE);
+        combo.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        combo.setFocusable(false);
+        combo.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(COLOR_BORDE),
+                        new EmptyBorder(8, 14, 8, 14)
+                )
+        );
+        combo.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list,
+                    Object value,
+                    int index,
+                    boolean isSelected,
+                    boolean cellHasFocus
+            ) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(
+                        list,
+                        value,
+                        index,
+                        isSelected,
+                        cellHasFocus
+                );
+                label.setBackground(isSelected ? COLOR_ACCENTO_ORO : new Color(30, 40, 52));
+                label.setForeground(isSelected ? Color.BLACK : Color.WHITE);
+                label.setBorder(new EmptyBorder(8, 14, 8, 14));
+                return label;
+            }
+        });
+        return combo;
+    }
+
     private JButton crearBoton(
             String texto,
             Color fondo,
@@ -289,6 +335,10 @@ return header;
 
     public JTextField getTxtBuscar() {
         return txtBuscar;
+    }
+
+    public JComboBox<String> getCmbDisponible() {
+        return cmbDisponible;
     }
 
     public JButton getBtnGuardar() {
